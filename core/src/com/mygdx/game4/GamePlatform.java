@@ -5,4 +5,8 @@ package com.mygdx.game4;
  */
 public class GamePlatform {
     //plattformklassen....
+    public void testmethod(){
+        //lol
+    }
 }
+
