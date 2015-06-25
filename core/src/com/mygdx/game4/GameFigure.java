@@ -15,6 +15,8 @@ public class GameFigure extends Rectangle {
         image = new Sprite(new Texture(Gdx.files.internal(path)));
     }
 
+    //jfgfkjfg
+
     public boolean overLaps(GameFigure object) {
         return x < object.x + object.width &&
                 x + width > object.x &&
