@@ -1,9 +1,13 @@
 package com.mygdx.game4;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
+
+import java.util.List;
 
 public abstract class GameItem extends Rectangle {
 
@@ -28,5 +32,6 @@ public abstract class GameItem extends Rectangle {
     }
 
     //Maa overrides i barneklassene:
-    public abstract void render();
+    public abstract void render(List<GameItem> gameItems);
+    public abstract void handleInput(OrthographicCamera camera);
 }
