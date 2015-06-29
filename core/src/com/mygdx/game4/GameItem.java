@@ -32,6 +32,7 @@ public abstract class GameItem extends Rectangle {
     }
 
     //Maa overrides i barneklassene:
+    public abstract void render(GamePlayer player1);
     public abstract void render(List<GameItem> gameItems);
     public abstract void handleInput(OrthographicCamera camera);
 }

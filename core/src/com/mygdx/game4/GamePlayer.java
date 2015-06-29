@@ -25,63 +25,70 @@ public class GamePlayer extends GameItem {
     }
 
     @Override
+    public void render(GamePlayer player1) {
+
+    }
+
+    @Override
     public void render(List<GameItem> gameItems) {
 
-        GamePlatform platform1 = (GamePlatform)gameItems.get(0);
+        for (int i=0; i < gameItems.size(); i++) {
+            GamePlatform platform1 = (GamePlatform) gameItems.get(i);
 
-        if (isJumpingUp) {
-            this.y += SummerGame4.GRAVITY;
-        }
-
-        if (this.y <= SummerGame4.GROUND_LEVEL
-                || this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                && (this.x < platform1.x + GamePlatform.PLATFORM_WIDHT)) {
-            isJumpingUp = false;
-
-            if (this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                    && (this.x < platform1.x + GamePlatform.PLATFORM_WIDHT)) {
-                isJumpingDown = true;
+            if (isJumpingUp) {
+                this.y += SummerGame4.GRAVITY;
             }
-            //oppaa platformen
-        }
-        if (isJumpingUp && this.y < MAX_JUMP_HEIGHT) {
-            this.y += SummerGame4.GRAVITY;
-//			double part1 = this.x*Math.tan(Math.PI/2);
-//			double part2 = 9.81*Math.pow(this.x, 2);
-//			double part3 = 2*(22*Math.cos(Math.PI/2));
-//			this.y = (int)(part1 - (part2/part3));
-//
-            if (this.y == MAX_JUMP_HEIGHT ||
+
+            if (this.y <= SummerGame4.GROUND_LEVEL
+                    || this.x + GamePlayer.PLAYER_SIZE >= platform1.x
+                    && (this.x < platform1.x + platform1.getWidth())) {
+                isJumpingUp = false;
+
+                if (this.x + GamePlayer.PLAYER_SIZE >= platform1.x
+                        && (this.x < platform1.x + platform1.getWidth())) {
+                    isJumpingDown = true;
+                }
+                //oppaa platformen
+            }
+            if (isJumpingUp && this.y < MAX_JUMP_HEIGHT) {
+                this.y += SummerGame4.GRAVITY;
+                //			double part1 = this.x*Math.tan(Math.PI/2);
+                //			double part2 = 9.81*Math.pow(this.x, 2);
+                //			double part3 = 2*(22*Math.cos(Math.PI/2));
+                //			this.y = (int)(part1 - (part2/part3));
+                //
+                if (this.y == MAX_JUMP_HEIGHT ||
+                        this.x + GamePlayer.PLAYER_SIZE >= platform1.x
+                                && (this.x < platform1.x + platform1.getWidth())) {
+                    isJumpingUp = false;
+                    isJumpingDown = true;
+                }
+            }
+
+            if (isJumpingDown && this.y >= SummerGame4.GROUND_LEVEL ||
                     this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                            && (this.x < platform1.x + GamePlatform.PLATFORM_WIDHT)) {
-                isJumpingUp = false;
-                isJumpingDown = true;
+                            && (this.x < platform1.x + platform1.getWidth())) {
+                this.y -= SummerGame4.GRAVITY;
+                if (this.y <= SummerGame4.GROUND_LEVEL) {
+                    isJumpingDown = false;
+                }
             }
-        }
+            if ((this.y) <= (platform1.y + platform1.getHeight())
+                    && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
+                    && (this.x < platform1.x + platform1.getWidth())
+                    ) {
 
-        if (isJumpingDown && this.y >= SummerGame4.GROUND_LEVEL ||
-                this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                        && (this.x < platform1.x + GamePlatform.PLATFORM_WIDHT)) {
-            this.y -= SummerGame4.GRAVITY;
-            if (this.y <= SummerGame4.GROUND_LEVEL) {
-                isJumpingDown = false;
-            }
-        }
-        if ((this.y) <= (platform1.y + GamePlatform.PLATFORM_HEIGHT)
-                && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                && (this.x < platform1.x + GamePlatform.PLATFORM_WIDHT)
-                ) {
+                this.y = platform1.y + platform1.getHeight();
+                System.out.println(this.x + " : " + platform1.x);
 
-            this.y = platform1.y + GamePlatform.PLATFORM_HEIGHT;
-            System.out.println(this.x + " : " + platform1.x);
-
-            if (this.y == (platform1.y + GamePlatform.PLATFORM_HEIGHT) && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                    && (this.x < platform1.x + GamePlatform.PLATFORM_WIDHT)) {
-//					this.x += MOVE_SPEED;
-                isJumpingUp = false;
-                ;
-                System.out.println(isJumpingUp);
-                System.out.println(isJumpingDown);
+                if (this.y == (platform1.y + platform1.getHeight()) && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
+                        && (this.x < platform1.x + platform1.getWidth())) {
+                    //					this.x += MOVE_SPEED;
+                    isJumpingUp = false;
+                    ;
+                    System.out.println(isJumpingUp);
+                    System.out.println(isJumpingDown);
+                }
             }
         }
     }
@@ -105,7 +112,7 @@ public class GamePlayer extends GameItem {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             this.x -= stepValue;
             if (this.x < 1500) {
-                camera.translate(-CAMERA_PAN_SPEED, 0, 0);
+                camera.translate(-SummerGame4.CAMERA_PAN_SPEED, 0, 0);
             }
             if (this.x < 0) {
                 this.x = 0;
@@ -115,7 +122,7 @@ public class GamePlayer extends GameItem {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             this.x += stepValue;
             if (this.x > 500) {
-                camera.translate(CAMERA_PAN_SPEED, 0, 0);
+                camera.translate(SummerGame4.CAMERA_PAN_SPEED, 0, 0);
             }
             if ((this.x + GamePlayer.PLAYER_SIZE) >= SummerGame4.WORLD_WIDTH) {
                 this.x = (SummerGame4.WORLD_WIDTH - GamePlayer.PLAYER_SIZE);

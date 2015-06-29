@@ -17,9 +17,10 @@ import java.util.List;
 
 public class SummerGame4 extends ApplicationAdapter implements GestureDetector.GestureListener {
     SpriteBatch batch;
-    Texture img;
     private GamePlayer player1;
-    private GamePlayer platform1;
+    private GamePlatform platform1;
+    private GamePlatform platform2;
+    private GamePlatform platform3;
 
     private List<GameItem> gameItems;
 
@@ -31,15 +32,9 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
     public static final int WORLD_HEIGHT = 512;
 
     public final static int GRAVITY = 10;
-
-    private final float CAMERA_PAN_SPEED = 18;
+    public final static float CAMERA_PAN_SPEED = 18;
     public static final int GROUND_LEVEL = 200;
 
-    private final int MOVE_SPEED = 4;
-    private boolean MOVE_RIGHT = true;
-
-
-    private int jumpSpeed = GRAVITY;
 
     @Override
     public void create() {
@@ -51,10 +46,14 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         backGround.setPosition(0, 0);
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
-
         player1 = new GamePlayer(200, GROUND_LEVEL, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
-        platform1 = new GamePlayer(500, 270, PLATFORM_WIDHT, PLATFORM_HEIGHT, "SmallPlatform.png");
+        platform1 = new GamePlatform(900, 270, 140, 30, "SmallPlatform.png", 7);
+        platform2 = new GamePlatform(300, 170, 240, 30, "SmallPlatform.png", 4);
+        platform3 = new GamePlatform(1100, 440, 40, 30, "SmallPlatform.png", 2);
+
         gameItems.add(platform1);
+        gameItems.add(platform2);
+        gameItems.add(platform3);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -74,45 +73,27 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         player1.render(gameItems);
+        for (GameItem gameItem: gameItems) {
+            gameItem.render(player1);
+        }
 
         batch.begin();
         backGround.draw(batch);
-        if (MOVE_RIGHT == true) {
-            platform1.x += MOVE_SPEED;
-        } else {
-            platform1.x -= MOVE_SPEED;
-        }
-
-        if (platform1.x + PLATFORM_WIDHT >= WORLD_WIDTH) {
-            MOVE_RIGHT = false;
-        }
-        if (platform1.x <= 0) {
-            MOVE_RIGHT = true;
-        }
-        if (player1.y >= (platform1.y + PLATFORM_HEIGHT) && player1.x >= platform1.x && player1.x <= platform1.x + PLATFORM_WIDHT && MOVE_RIGHT == true) {
-            player1.x += MOVE_SPEED;
-        }
-        if (player1.y >= (platform1.y + PLATFORM_HEIGHT) && player1.x >= platform1.x && player1.x <= platform1.x + PLATFORM_WIDHT && MOVE_RIGHT == false) {
-            player1.x -= MOVE_SPEED;
-        }
-        if (player1.y >= (platform1.y + PLATFORM_HEIGHT) && player1.x >= platform1.x && player1.x <= platform1.x + PLATFORM_WIDHT) {
-//			isJumpingDown = false;
-//			isJumpingUp = false;
-        }
-
-//		player1.x += (-MOVE_SPEED);
-
         batch.draw(player1.getImage(), player1.x, player1.y);
-        batch.draw(platform1.getImage(), platform1.x, platform1.y);
+        for (GameItem gameItem: gameItems) {
+            batch.draw(gameItem.getImage(), gameItem.x, gameItem.y);
+        }
+        //batch.draw(platform1.getImage(), platform1.x, platform1.y);
+        //batch.draw(platform2.getImage(), platform2.x, platform2.y);
         batch.end();
 //		System.out.println("player1 x verdi: " + player1.x + "y verdi: "+ player1.y);
     }
 
-    public void jumpspeed() {
+    /*public void jumpspeed() {
         if (isJumpingUp && player1.y < MAX_JUMP_HEIGHT) {
 
         }
-    }
+    }*/
 
     private void handleInput() {
         player1.handleInput(camera);
