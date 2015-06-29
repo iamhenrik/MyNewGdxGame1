@@ -68,9 +68,20 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         batch.setProjectionMatrix(camera.combined);
 //		Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        CheckCollisions();
 
         batch.begin();
         backGround.draw(batch);
+
+
+//		player1.x += (-MOVE_SPEED);
+
+        batch.draw(player1.getImage(), player1.x, player1.y);
+        batch.draw(platform1.getImage(), platform1.x, platform1.y);
+        batch.end();
+//		System.out.println("player1 x verdi: " + player1.x + "y verdi: "+ player1.y);
+    }
+    public void CheckCollisions(){
         if (MOVE_RIGHT == true) {
             platform1.x += MOVE_SPEED;
         } else {
@@ -153,13 +164,6 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
 //			isJumpingDown = false;
 //			isJumpingUp = false;
         }
-
-//		player1.x += (-MOVE_SPEED);
-
-        batch.draw(player1.getImage(), player1.x, player1.y);
-        batch.draw(platform1.getImage(), platform1.x, platform1.y);
-        batch.end();
-//		System.out.println("player1 x verdi: " + player1.x + "y verdi: "+ player1.y);
     }
 
     public void jumpspeed() {
