@@ -2,7 +2,6 @@ package com.mygdx.game4;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -16,8 +15,8 @@ import com.badlogic.gdx.input.GestureDetector;;
 public class SummerGame4 extends ApplicationAdapter implements GestureDetector.GestureListener {
     SpriteBatch batch;
     Texture img;
-    private GameFigure player1;
-    private GameFigure platform1;
+    private GamePlayer player1;
+    private GamePlayer platform1;
     private final int stepValue = 6;
     private OrthographicCamera camera;
     private float rotationSpeed;
@@ -25,7 +24,7 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
     //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
     public static final int WORLD_WIDTH = 2048;
     public static final int WORLD_HEIGHT = 512;
-    public final int PLAYER_SIZE = 32;
+
     private final int GRAVITY = 10;
     private final int MAX_JUMP_HEIGHT = 400;
     private final float CAMERA_PAN_SPEED = 18;
@@ -49,8 +48,8 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
 
-        player1 = new GameFigure(200, GROUND_LEVEL, PLAYER_SIZE, PLAYER_SIZE, "player2.png");
-        platform1 = new GameFigure(500, 270, PLATFORM_WIDHT, PLATFORM_HEIGHT, "SmallPlatform.png");
+        player1 = new GamePlayer(200, GROUND_LEVEL, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
+        platform1 = new GamePlayer(500, 270, PLATFORM_WIDHT, PLATFORM_HEIGHT, "SmallPlatform.png");
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(30, 30 * (h / w));
@@ -98,15 +97,15 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
 //			System.out.println("player1.y: " +player1.y + "player1.x: " + player1.x);
 //		}
         if (player1.y <= GROUND_LEVEL
-                || player1.x + PLAYER_SIZE >= platform1.x
+                || player1.x + GamePlayer.PLAYER_SIZE >= platform1.x
                 && (player1.x < platform1.x + PLATFORM_WIDHT)) {
             isJumpingUp = false;
 
-            if (player1.x + PLAYER_SIZE >= platform1.x
+            if (player1.x + GamePlayer.PLAYER_SIZE >= platform1.x
                     && (player1.x < platform1.x + PLATFORM_WIDHT)) {
                 isJumpingDown = true;
             }
-            //oppå platformen
+            //oppaa platformen
         }
         if (isJumpingUp && player1.y < MAX_JUMP_HEIGHT) {
             player1.y += GRAVITY;
@@ -116,7 +115,7 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
 //			player1.y = (int)(part1 - (part2/part3));
 //
             if (player1.y == MAX_JUMP_HEIGHT ||
-                    player1.x + PLAYER_SIZE >= platform1.x
+                    player1.x + GamePlayer.PLAYER_SIZE >= platform1.x
                             && (player1.x < platform1.x + PLATFORM_WIDHT)) {
                 isJumpingUp = false;
                 isJumpingDown = true;
@@ -124,7 +123,7 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         }
 
         if (isJumpingDown && player1.y >= GROUND_LEVEL ||
-                player1.x + PLAYER_SIZE >= platform1.x
+                player1.x + GamePlayer.PLAYER_SIZE >= platform1.x
                         && (player1.x < platform1.x + PLATFORM_WIDHT)) {
             player1.y -= GRAVITY;
             if (player1.y <= GROUND_LEVEL) {
@@ -132,14 +131,14 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
             }
         }
         if ((player1.y) <= (platform1.y + PLATFORM_HEIGHT)
-                && player1.x + PLAYER_SIZE >= platform1.x
+                && player1.x + GamePlayer.PLAYER_SIZE >= platform1.x
                 && (player1.x < platform1.x + PLATFORM_WIDHT)
                 ) {
 
             player1.y = platform1.y + PLATFORM_HEIGHT;
             System.out.println(player1.x + " : " + platform1.x);
 
-            if (player1.y == (platform1.y + PLATFORM_HEIGHT) && player1.x + PLAYER_SIZE >= platform1.x
+            if (player1.y == (platform1.y + PLATFORM_HEIGHT) && player1.x + GamePlayer.PLAYER_SIZE >= platform1.x
                     && (player1.x < platform1.x + PLATFORM_WIDHT)) {
 //					player1.x += MOVE_SPEED;
                 isJumpingUp = false;
@@ -220,8 +219,8 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
     public void movementUpPlayer1() {
         if (Gdx.input.isKeyPressed(Keys.Y)) {
             player1.y += stepValue;
-            if ((player1.y + PLAYER_SIZE) >= (WORLD_HEIGHT)) {
-                player1.y = WORLD_HEIGHT - PLAYER_SIZE;
+            if ((player1.y + GamePlayer.PLAYER_SIZE) >= (WORLD_HEIGHT)) {
+                player1.y = WORLD_HEIGHT - GamePlayer.PLAYER_SIZE;
             }
         }
     }
@@ -253,8 +252,8 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
             if (player1.x > 500) {
                 camera.translate(CAMERA_PAN_SPEED, 0, 0);
             }
-            if ((player1.x + PLAYER_SIZE) >= WORLD_WIDTH) {
-                player1.x = (WORLD_WIDTH - PLAYER_SIZE);
+            if ((player1.x + GamePlayer.PLAYER_SIZE) >= WORLD_WIDTH) {
+                player1.x = (WORLD_WIDTH - GamePlayer.PLAYER_SIZE);
             }
         }
     }
