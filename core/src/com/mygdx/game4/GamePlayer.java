@@ -2,7 +2,6 @@ package com.mygdx.game4;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -25,12 +24,12 @@ public class GamePlayer extends GameItem {
     }
 
     @Override
-    public void render(GamePlayer player1) {
+    public void update(GamePlayer player1) {
 
     }
 
     @Override
-    public void render(List<GameItem> gameItems) {
+    public void update(List<GameItem> gameItems) {
 
         for (int i=0; i < gameItems.size(); i++) {
             GamePlatform platform1 = (GamePlatform) gameItems.get(i);

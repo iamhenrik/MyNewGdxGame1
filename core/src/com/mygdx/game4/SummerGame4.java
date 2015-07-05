@@ -2,13 +2,11 @@ package com.mygdx.game4;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.input.GestureDetector;
 
@@ -69,14 +67,18 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
     @Override
     public void render() {
         handleInput();
+        //Kamera:
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        player1.render(gameItems);
+
+        //Flytt spiller og plattformer:
+        player1.update(gameItems);
         for (GameItem gameItem: gameItems) {
-            gameItem.render(player1);
+            gameItem.update(player1);
         }
 
+        //Render:
         batch.begin();
         backGround.draw(batch);
         batch.draw(player1.getImage(), player1.x, player1.y);

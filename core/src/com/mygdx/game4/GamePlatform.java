@@ -28,7 +28,7 @@ public class GamePlatform extends GameItem {
     }
 
     @Override
-    public void render(GamePlayer player1) {
+    public void update(GamePlayer player1) {
         if (MOVE_RIGHT == true) {
             this.x += speed;
         } else {
@@ -56,7 +56,7 @@ public class GamePlatform extends GameItem {
     }
 
     @Override
-    public void render(List<GameItem> gameItems) {
+    public void update(List<GameItem> gameItems) {
 
     }
 
