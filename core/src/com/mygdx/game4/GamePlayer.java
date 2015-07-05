@@ -19,6 +19,7 @@ public class GamePlayer extends GameItem {
     private final float CAMERA_PAN_SPEED = 18;
 
 
+
     public GamePlayer(int x, int y, int width, int height, String path) {
         super(x, y, width, height, path);
         image = new Sprite(new Texture(Gdx.files.internal(path)));
@@ -29,12 +30,13 @@ public class GamePlayer extends GameItem {
     }
 
     public void update(ArrayList<GameItem> gameItems) {
-        for (int i = 0; i < gameItems.size(); i++) {
-
+        for (int i=0; i < gameItems.size(); i++) {
             GamePlatform platform1 = (GamePlatform) gameItems.get(i);
+
             if (isJumpingUp) {
                 this.y += SummerGame4.GRAVITY;
             }
+
             if (this.y <= SummerGame4.GROUND_LEVEL
                     || this.x + GamePlayer.PLAYER_SIZE >= platform1.x
                     && (this.x < platform1.x + platform1.getWidth())) {
@@ -68,15 +70,20 @@ public class GamePlayer extends GameItem {
             if ((this.y) <= (platform1.y + platform1.getHeight())
                     && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
                     && (this.x < platform1.x + platform1.getWidth())
-                    ) {
+                    && platform1.hasPlayer() == true) {
 
                 this.y = platform1.y + platform1.getHeight();
-                System.out.println(this.x + " : " + platform1.x);
+                platform1.setPlayer(true);
+                System.out.println();
+                    if(platform1.hasPlayer() && this.y <= platform1.getHeight()){
+                        this.y = SummerGame4.GROUND_LEVEL;
+                        platform1.setPlayer(false);
+                    }
 
                 if (this.y == (platform1.y + platform1.getHeight()) && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
                         && (this.x < platform1.x + platform1.getWidth())) {
-//					this.x += MOVE_SPEED;
-                    isJumpingUp = false;
+                    //					this.x += MOVE_SPEED;
+                    //isJumpingUp = false;
                     ;
                     System.out.println(isJumpingUp);
                     System.out.println(isJumpingDown);

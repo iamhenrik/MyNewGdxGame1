@@ -15,6 +15,7 @@ public class GamePlatform extends GameItem {
     
     private boolean moveRight = true;
     private int moveSpeed = 4;
+    private boolean hasPlayer = false;
     
     public GamePlatform(int x, int y, int width, int height, String path, int moveSpeed) {
         super(x, y, width, height, path);
@@ -22,10 +23,12 @@ public class GamePlatform extends GameItem {
         image = new Sprite(new Texture(Gdx.files.internal(path)));
         image.setRegionWidth(width);
         image.setRegionHeight(height);
+
     }
     public void update(GamePlayer player1) {
         if (moveRight == true) {
             this.x += moveSpeed;
+
         } else {
             this.x -= moveSpeed;
         }
@@ -36,16 +39,24 @@ public class GamePlatform extends GameItem {
             moveRight = true;
         }
         if (player1.y >= (this.y + this.height) && player1.x >= this.x && player1.x <= this.x + this.width && moveRight == true) {
-            this.x += moveSpeed;
+            player1.x += moveSpeed;
         }
         if (player1.y >= (this.y + this.height) && player1.x >= this.x && player1.x <= this.x + this.width && moveRight == false) {
-            this.x -= moveSpeed;
+            player1.x -= moveSpeed;
         }
         if (player1.y >= (this.y + this.height) && player1.x >= this.x && player1.x <= this.x + this.width) {
 //			isJumpingDown = false;
 //			isJumpingUp = false;
         }
 
+    }
+
+    public boolean hasPlayer() {
+        return hasPlayer;
+    }
+
+    public void setPlayer(boolean hasPlayer) {
+        this.hasPlayer = hasPlayer;
     }
 
     @Override
