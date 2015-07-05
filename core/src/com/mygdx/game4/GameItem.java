@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.ArrayList;
+
 public abstract class GameItem extends Rectangle {
 
     protected Sprite image;
@@ -14,15 +16,17 @@ public abstract class GameItem extends Rectangle {
 
         image = new Sprite(new Texture(Gdx.files.internal(path)));
     }
-     public boolean overLaps(GameItem object){
-            return x < object.x + object.width &&
-                    x + width > object.x &&
-                    y < object.y + object.height &&
-                    y + height > object.y;
-        }
+
+    public boolean overLaps(GameItem object) {
+        return x < object.x + object.width &&
+                x + width > object.x &&
+                y < object.y + object.height &&
+                y + height > object.y;
+    }
 
     public Sprite getImage() {
         return image;
     }
-
-    }
+    public abstract void update(GamePlayer player1);
+    public abstract void update(ArrayList<GameItem> gameItems);
+}
