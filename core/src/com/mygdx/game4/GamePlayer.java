@@ -12,8 +12,8 @@ import java.util.List;
 public class GamePlayer extends GameItem {
 
     public final static int PLAYER_SIZE = 32;
-    private boolean isJumpingUp = false;
-    private boolean isJumpingDown = false;
+    private boolean isJumping = false;
+    //private boolean isJumpingDown = false;
     private final int MAX_JUMP_HEIGHT = 400;
 
     private final int stepValue = 6;
@@ -36,13 +36,13 @@ public class GamePlayer extends GameItem {
         for (int i = 0; i < gameItems.size(); i++) {
             GamePlatform platform1 = (GamePlatform) gameItems.get(i);
 
-            if (isJumpingUp && angle < Math.PI) {
+            if (isJumping && angle < Math.PI) {
                 this.y = SummerGame4.GROUND_LEVEL + (int)((200f * Math.sin(angle)));
                 angle += (10)*(Math.PI/180f);
             } else {
                 this.y = SummerGame4.GROUND_LEVEL;
                 angle = 0;
-                isJumpingUp = false;
+                isJumping = false;
             }
 
             /*
@@ -154,7 +154,7 @@ public class GamePlayer extends GameItem {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             //if (!isJumpingDown)
-            isJumpingUp = true;
+            isJumping = true;
         }
 //	        if (Gdx.input.isKeyPressed(Keys.W)) {
 //	        	camera.rotate(-rotationSpeed, 0, 0, 1);
