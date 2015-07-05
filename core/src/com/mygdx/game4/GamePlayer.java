@@ -28,12 +28,24 @@ public class GamePlayer extends GameItem {
 
     }
 
+    private float angle = 0;
+
     @Override
     public void update(List<GameItem> gameItems) {
 
-        for (int i=0; i < gameItems.size(); i++) {
+        for (int i = 0; i < gameItems.size(); i++) {
             GamePlatform platform1 = (GamePlatform) gameItems.get(i);
 
+            if (isJumpingUp && angle < Math.PI) {
+                this.y = SummerGame4.GROUND_LEVEL + (int)((200f * Math.sin(angle)));
+                angle += (10)*(Math.PI/180f);
+            } else {
+                this.y = SummerGame4.GROUND_LEVEL;
+                angle = 0;
+                isJumpingUp = false;
+            }
+
+            /*
             if (isJumpingUp) {
                 this.y += SummerGame4.GRAVITY;
             }
@@ -51,11 +63,6 @@ public class GamePlayer extends GameItem {
             }
             if (isJumpingUp && this.y < MAX_JUMP_HEIGHT) {
                 this.y += SummerGame4.GRAVITY;
-                //			double part1 = this.x*Math.tan(Math.PI/2);
-                //			double part2 = 9.81*Math.pow(this.x, 2);
-                //			double part3 = 2*(22*Math.cos(Math.PI/2));
-                //			this.y = (int)(part1 - (part2/part3));
-                //
                 if (this.y == MAX_JUMP_HEIGHT ||
                         this.x + GamePlayer.PLAYER_SIZE >= platform1.x
                                 && (this.x < platform1.x + platform1.getWidth())) {
@@ -82,13 +89,12 @@ public class GamePlayer extends GameItem {
 
                 if (this.y == (platform1.y + platform1.getHeight()) && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
                         && (this.x < platform1.x + platform1.getWidth())) {
-                    //					this.x += MOVE_SPEED;
                     isJumpingUp = false;
-                    ;
                     System.out.println(isJumpingUp);
                     System.out.println(isJumpingDown);
                 }
             }
+            */
         }
     }
 
@@ -147,8 +153,8 @@ public class GamePlayer extends GameItem {
             camera.translate(0, 3, 0);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (!isJumpingDown)
-                isJumpingUp = true;
+            //if (!isJumpingDown)
+            isJumpingUp = true;
         }
 //	        if (Gdx.input.isKeyPressed(Keys.W)) {
 //	        	camera.rotate(-rotationSpeed, 0, 0, 1);

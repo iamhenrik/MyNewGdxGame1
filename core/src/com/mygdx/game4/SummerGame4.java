@@ -45,13 +45,9 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
         player1 = new GamePlayer(200, GROUND_LEVEL, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
-        platform1 = new GamePlatform(900, 270, 140, 30, "SmallPlatform.png", 7);
-        platform2 = new GamePlatform(300, 170, 240, 30, "SmallPlatform.png", 4);
-        platform3 = new GamePlatform(1100, 440, 40, 30, "SmallPlatform.png", 2);
-
-        gameItems.add(platform1);
-        gameItems.add(platform2);
-        gameItems.add(platform3);
+        gameItems.add(new GamePlatform(900, 270, 140, 30, "SmallPlatform.png", 3));
+        //gameItems.add(new GamePlatform(300, 170, 240, 30, "SmallPlatform.png", 4));
+        //gameItems.add(new GamePlatform(1100, 440, 40, 30, "SmallPlatform.png", 2));
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
