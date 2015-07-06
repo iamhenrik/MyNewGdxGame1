@@ -13,7 +13,7 @@ public class GamePlayer extends GameItem {
 
     public final static int PLAYER_SIZE = 32;
     private boolean isJumping = false;
-    private final int stepValue = 6;
+    private final int stepValue = 12;
 
     public GamePlayer(int x, int y, int width, int height, String path) {
         super(x, y, width, height, path);
@@ -41,7 +41,7 @@ public class GamePlayer extends GameItem {
     @Override
     public void update(List<GameItem> gameItems) {
         if (isJumping && angle < Math.PI) {
-            this.y = groundLevel + (int)((430f - groundLevel) * Math.sin(angle));
+            this.y = groundLevel + (int)((330f) * Math.sin(angle));
             angle += (8)*(Math.PI/180f);
         } else {
             this.y = groundLevel;
@@ -58,14 +58,25 @@ public class GamePlayer extends GameItem {
                 groundLevel = (int) pf.y + (int) pf.getHeight();
 
                 //Spilleren skal bevege seg etter platformen:
-                if (pf.getMoveRight())
-                    this.x += pf.getSpeed();
-                else
-                    this.x -= pf.getSpeed();
+                if(pf.isHorisontalFalseVerticalTrue()==false){
+                    if (pf.getMoveRight())
+                        this.x += pf.getSpeed();
+                    else
+                        this.x -= pf.getSpeed();
 
-                break; //NB!!! ut av løkka!
+                    break; //NB!!! ut av løkka!
+                }else {
+                    if (pf.isMoveUp())
+                        this.y += pf.getSpeed();
+                    else
+                        this.y -= pf.getSpeed();
+
+                    break; //NB!!! ut av løkka!
+                }
             } else {
-                groundLevel = SummerGame4.GROUND_LEVEL;
+                if(groundLevel >= SummerGame4.GROUND_LEVEL){
+                    groundLevel -= 5;
+                }
             }
         }
     }

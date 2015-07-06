@@ -23,12 +23,12 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
     private float rotationSpeed;
     private Sprite backGround;
     //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
-    public static final int WORLD_WIDTH = 2048;
-    public static final int WORLD_HEIGHT = 512;
+    public static final int WORLD_WIDTH = 3000;
+    public static final int WORLD_HEIGHT = 1500;
 
     public final static int GRAVITY = 10;
     public final static float CAMERA_PAN_SPEED = 18;
-    public static final int GROUND_LEVEL = 200;
+    public static final int GROUND_LEVEL = 115;
 
 
     @Override
@@ -37,15 +37,19 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
 
         rotationSpeed = 0.5f;
         batch = new SpriteBatch();
-        backGround = new Sprite(new Texture("panormaBackGroundScaled.png"));
+        backGround = new Sprite(new Texture("BackGround.jpg"));
         backGround.setPosition(0, 0);
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
         player1 = new GamePlayer(200, GROUND_LEVEL, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
-        gameItems.add(new GamePlatform(900, 350, 140, 30, "SmallPlatform.png", 3));
-        gameItems.add(new GamePlatform(270, 280, 240, 30, "SmallPlatform.png", 4));
-        gameItems.add(new GamePlatform(130, 230, 180, 30, "SmallPlatform.png", 2));
-        //gameItems.add(new GamePlatform(1100, 440, 40, 30, "SmallPlatform.png", 2));
+        gameItems.add(new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 6, false));
+        gameItems.add(new GamePlatform(900, 350, 140, 30, "SmallPlatform.png", 3, true));
+        gameItems.add(new GamePlatform(1100, 440, 140, 30, "SmallPlatform.png", 6, true));
+
+        //gameItems.add(new GamePlatform(270, 280, 240, 30, "SmallPlatform.png", 4, false));
+        //gameItems.add(new GamePlatform(130, 230, 180, 30, "SmallPlatform.png", 2, false));
+        gameItems.add(new GamePlatform(2500, 1200, 180, 30, "SmallPlatform.png", 0, false));
+
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
