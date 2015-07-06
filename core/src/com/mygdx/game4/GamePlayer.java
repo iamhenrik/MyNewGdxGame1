@@ -41,7 +41,7 @@ public class GamePlayer extends GameItem {
     @Override
     public void update(List<GameItem> gameItems) {
         if (isJumping && angle < Math.PI) {
-            this.y = groundLevel + (int)((230f * Math.sin(angle)));
+            this.y = groundLevel + (int)((430f - groundLevel) * Math.sin(angle));
             angle += (8)*(Math.PI/180f);
         } else {
             this.y = groundLevel;
