@@ -13,10 +13,9 @@ import java.util.List;
  * Created by Henrik on 25.06.2015.
  */
 public class GamePlatform extends GameItem {
-    //public final static int PLATFORM_HEIGHT = 30;
-    //public final static int PLATFORM_WIDHT = 240;
-    private boolean MOVE_RIGHT = true;
     private int speed = 4;
+    //private boolean hasPlayer = false;
+    private boolean moveRight = true;
 
     public GamePlatform(int x, int y, int width, int height, String path, int speed) {
         super(x, y, width, height, path);
@@ -27,32 +26,28 @@ public class GamePlatform extends GameItem {
         image.setRegionHeight(height);
     }
 
+    public int getSpeed() {
+        return speed;
+    }
+
+    public boolean getMoveRight() {
+        return moveRight;
+    }
+
     @Override
     public void update(GamePlayer player1) {
-        if (MOVE_RIGHT == true) {
+        if (this.x + width >= SummerGame4.WORLD_WIDTH) {
+            moveRight = false;
+        }
+        if (this.x <= 0) {
+            moveRight = true;
+        }
+
+        if (moveRight == true) {
             this.x += speed;
         } else {
             this.x -= speed;
         }
-
-        if (this.x + width >= SummerGame4.WORLD_WIDTH) {
-            MOVE_RIGHT = false;
-        }
-        if (this.x <= 0) {
-            MOVE_RIGHT = true;
-        }
-        if (player1.y >= (this.y + height) && player1.x >= this.x && player1.x <= this.x + width && MOVE_RIGHT == true) {
-            player1.x += speed;
-        }
-        if (player1.y >= (this.y + height) && player1.x >= this.x && player1.x <= this.x + width && MOVE_RIGHT == false) {
-            player1.x -= speed;
-        }
-        if (player1.y >= (this.y + height) && player1.x >= this.x && player1.x <= this.x + width) {
-//			isJumpingDown = false;
-//			isJumpingUp = false;
-        }
-
-//		player1.x += (-speed);
     }
 
     @Override
@@ -65,4 +60,3 @@ public class GamePlatform extends GameItem {
         //nothing to do...
     }
 }
-

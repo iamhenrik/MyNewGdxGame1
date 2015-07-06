@@ -16,9 +16,6 @@ import java.util.List;
 public class SummerGame4 extends ApplicationAdapter implements GestureDetector.GestureListener {
     SpriteBatch batch;
     private GamePlayer player1;
-    private GamePlatform platform1;
-    private GamePlatform platform2;
-    private GamePlatform platform3;
 
     private List<GameItem> gameItems;
 
@@ -45,8 +42,9 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
         player1 = new GamePlayer(200, GROUND_LEVEL, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
-        gameItems.add(new GamePlatform(900, 270, 140, 30, "SmallPlatform.png", 3));
-        //gameItems.add(new GamePlatform(300, 170, 240, 30, "SmallPlatform.png", 4));
+        gameItems.add(new GamePlatform(900, 350, 140, 30, "SmallPlatform.png", 3));
+        gameItems.add(new GamePlatform(270, 280, 240, 30, "SmallPlatform.png", 4));
+        gameItems.add(new GamePlatform(130, 230, 180, 30, "SmallPlatform.png", 2));
         //gameItems.add(new GamePlatform(1100, 440, 40, 30, "SmallPlatform.png", 2));
 
         float w = Gdx.graphics.getWidth();
@@ -69,10 +67,11 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Flytt spiller og plattformer:
-        player1.update(gameItems);
+
         for (GameItem gameItem: gameItems) {
             gameItem.update(player1);
         }
+        player1.update(gameItems);
 
         //Render:
         batch.begin();

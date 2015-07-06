@@ -13,9 +13,6 @@ public class GamePlayer extends GameItem {
 
     public final static int PLAYER_SIZE = 32;
     private boolean isJumping = false;
-    //private boolean isJumpingDown = false;
-    private final int MAX_JUMP_HEIGHT = 400;
-
     private final int stepValue = 6;
 
     public GamePlayer(int x, int y, int width, int height, String path) {
@@ -29,72 +26,47 @@ public class GamePlayer extends GameItem {
     }
 
     private float angle = 0;
+    private int groundLevel = SummerGame4.GROUND_LEVEL;
+
+    /*
+    private boolean overlaps(GamePlatform platform) {
+        return (this.x + this.getWidth()/2f >= platform.x && this.x + this.getWidth()/2f <= platform.x + platform.getWidth());
+    }*/
+
+    private boolean on(GamePlatform platform) {
+        return (((this.x + this.getWidth()/2f) >= (platform.x)) && ((this.x + this.getWidth()/2f <= platform.x + platform.getWidth())) &&
+                ((this.y >= platform.y)));
+    }
 
     @Override
     public void update(List<GameItem> gameItems) {
+        if (isJumping && angle < Math.PI) {
+            this.y = groundLevel + (int)((230f * Math.sin(angle)));
+            angle += (8)*(Math.PI/180f);
+        } else {
+            this.y = groundLevel;
+            angle = 0;
+            isJumping = false;
+        }
 
+        //Sjekker seg selv mot alle plattformer. Dersom på en platform sjekkes ikke resten...
         for (int i = 0; i < gameItems.size(); i++) {
-            GamePlatform platform1 = (GamePlatform) gameItems.get(i);
+            GamePlatform pf = (GamePlatform) gameItems.get(i);
 
-            if (isJumping && angle < Math.PI) {
-                this.y = SummerGame4.GROUND_LEVEL + (int)((200f * Math.sin(angle)));
-                angle += (10)*(Math.PI/180f);
+            //På platformen:
+            if (this.on(pf)) {
+                groundLevel = (int) pf.y + (int) pf.getHeight();
+
+                //Spilleren skal bevege seg etter platformen:
+                if (pf.getMoveRight())
+                    this.x += pf.getSpeed();
+                else
+                    this.x -= pf.getSpeed();
+
+                break; //NB!!! ut av løkka!
             } else {
-                this.y = SummerGame4.GROUND_LEVEL;
-                angle = 0;
-                isJumping = false;
+                groundLevel = SummerGame4.GROUND_LEVEL;
             }
-
-            /*
-            if (isJumpingUp) {
-                this.y += SummerGame4.GRAVITY;
-            }
-
-            if (this.y <= SummerGame4.GROUND_LEVEL
-                    || this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                    && (this.x < platform1.x + platform1.getWidth())) {
-                isJumpingUp = false;
-
-                if (this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                        && (this.x < platform1.x + platform1.getWidth())) {
-                    isJumpingDown = true;
-                }
-                //oppaa platformen
-            }
-            if (isJumpingUp && this.y < MAX_JUMP_HEIGHT) {
-                this.y += SummerGame4.GRAVITY;
-                if (this.y == MAX_JUMP_HEIGHT ||
-                        this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                                && (this.x < platform1.x + platform1.getWidth())) {
-                    isJumpingUp = false;
-                    isJumpingDown = true;
-                }
-            }
-
-            if (isJumpingDown && this.y >= SummerGame4.GROUND_LEVEL ||
-                    this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                            && (this.x < platform1.x + platform1.getWidth())) {
-                this.y -= SummerGame4.GRAVITY;
-                if (this.y <= SummerGame4.GROUND_LEVEL) {
-                    isJumpingDown = false;
-                }
-            }
-            if ((this.y) <= (platform1.y + platform1.getHeight())
-                    && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                    && (this.x < platform1.x + platform1.getWidth())
-                    ) {
-
-                this.y = platform1.y + platform1.getHeight();
-                System.out.println(this.x + " : " + platform1.x);
-
-                if (this.y == (platform1.y + platform1.getHeight()) && this.x + GamePlayer.PLAYER_SIZE >= platform1.x
-                        && (this.x < platform1.x + platform1.getWidth())) {
-                    isJumpingUp = false;
-                    System.out.println(isJumpingUp);
-                    System.out.println(isJumpingDown);
-                }
-            }
-            */
         }
     }
 
