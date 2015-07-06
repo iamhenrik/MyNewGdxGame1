@@ -23,7 +23,7 @@ public abstract class GameItem extends Rectangle {
         return sprite;
     }
 
-    //Overstyres ved behov i barneklassene:
+    //Overstyres ved behov i barneklassene yes:
     public void render(SpriteBatch batch) {}
 
     //Overstyres ved behov i barneklassene:
