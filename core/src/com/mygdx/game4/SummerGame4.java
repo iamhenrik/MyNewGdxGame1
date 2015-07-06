@@ -23,7 +23,7 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
     private float rotationSpeed;
     private Sprite backGround;
     //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
-    public static final int WORLD_WIDTH = 2048;
+    public static final int WORLD_WIDTH = 1600;//2048;
     public static final int WORLD_HEIGHT = 512;
 
     public final static int GRAVITY = 10;
@@ -45,6 +45,7 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         gameItems.add(new GamePlatform(900, 350, 140, 30, "SmallPlatform.png", 3));
         gameItems.add(new GamePlatform(270, 280, 240, 30, "SmallPlatform.png", 4));
         gameItems.add(new GamePlatform(130, 230, 180, 30, "SmallPlatform.png", 2));
+        gameItems.add(new GamePlatform(1500, 380, 100, 30, "SmallPlatform.png", 0));
         //gameItems.add(new GamePlatform(1100, 440, 40, 30, "SmallPlatform.png", 2));
 
         float w = Gdx.graphics.getWidth();
@@ -61,6 +62,7 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
     @Override
     public void render() {
         handleInput();
+
         //Kamera:
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -69,28 +71,24 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         //Flytt spiller og plattformer:
 
         for (GameItem gameItem: gameItems) {
-            gameItem.update(player1);
+            gameItem.update();
         }
         player1.update(gameItems);
 
         //Render:
         batch.begin();
         backGround.draw(batch);
-        batch.draw(player1.getImage(), player1.x, player1.y);
+        player1.render(batch);
         for (GameItem gameItem: gameItems) {
-            batch.draw(gameItem.getImage(), gameItem.x, gameItem.y);
+            gameItem.render(batch);
         }
-        //batch.draw(platform1.getImage(), platform1.x, platform1.y);
-        //batch.draw(platform2.getImage(), platform2.x, platform2.y);
         batch.end();
-//		System.out.println("player1 x verdi: " + player1.x + "y verdi: "+ player1.y);
-    }
 
-    /*public void jumpspeed() {
-        if (isJumpingUp && player1.y < MAX_JUMP_HEIGHT) {
+        if (player1.getLives()==0) {
+            //Game over...
 
         }
-    }*/
+    }
 
     private void handleInput() {
         player1.handleInput(camera);

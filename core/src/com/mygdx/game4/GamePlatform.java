@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.List;
 
@@ -21,9 +22,9 @@ public class GamePlatform extends GameItem {
         super(x, y, width, height, path);
 
         this.speed = speed;
-        image = new Sprite(new Texture(Gdx.files.internal(path)));
-        image.setRegionWidth(width);
-        image.setRegionHeight(height);
+        sprite = new Sprite(new Texture(Gdx.files.internal(path)));
+        sprite.setRegionWidth(width);
+        sprite.setRegionHeight(height);
     }
 
     public int getSpeed() {
@@ -35,7 +36,12 @@ public class GamePlatform extends GameItem {
     }
 
     @Override
-    public void update(GamePlayer player1) {
+    public void render(SpriteBatch batch) {
+        batch.draw(this.getSprite(), this.x, this.y);
+    }
+
+    @Override
+    public void update() {
         if (this.x + width >= SummerGame4.WORLD_WIDTH) {
             moveRight = false;
         }
@@ -48,15 +54,5 @@ public class GamePlatform extends GameItem {
         } else {
             this.x -= speed;
         }
-    }
-
-    @Override
-    public void update(List<GameItem> gameItems) {
-
-    }
-
-    @Override
-    public void handleInput(OrthographicCamera camera) {
-        //nothing to do...
     }
 }
