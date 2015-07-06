@@ -13,17 +13,10 @@ import java.util.List;
  */
 public class GamePlatform extends GameItem {
     private int speed = 4;
-
-    public boolean isHorisontalFalseVerticalTrue() {
-        return HorisontalFalseVerticalTrue;
-    }
-
-    public void setHorisontalFalseVerticalTrue(boolean horisontalFalseVerticalTrue) {
-        HorisontalFalseVerticalTrue = horisontalFalseVerticalTrue;
-    }
-
-    //private boolean hasPlayer = false;
     private boolean HorisontalFalseVerticalTrue;
+    private int maxHeight;
+    private boolean moveRight = true;
+    private boolean moveUp = false;
 
     public boolean isMoveUp() {
         return moveUp;
@@ -32,16 +25,24 @@ public class GamePlatform extends GameItem {
     public void setMoveUp(boolean moveUp) {
         this.moveUp = moveUp;
     }
+    public boolean isHorisontalFalseVerticalTrue() {
+        return HorisontalFalseVerticalTrue;
+    }
+    public void setHorisontalFalseVerticalTrue(boolean horisontalFalseVerticalTrue) {
+        HorisontalFalseVerticalTrue = horisontalFalseVerticalTrue;
+    }
+    public int getMaxHeight() {
+        return maxHeight;
+    }
 
-    private boolean moveRight = true;
-    private boolean moveUp = false;
 
 
-    public GamePlatform(int x, int y, int width, int height, String path, int speed, boolean HorisontalFalseVerticalTrue) {
+    public GamePlatform(int x, int y, int width, int height, String path, int speed, boolean HorisontalFalseVerticalTrue, int maxHeight) {
         super(x, y, width, height, path);
 
         this.speed = speed;
         this.HorisontalFalseVerticalTrue = HorisontalFalseVerticalTrue;
+        this.maxHeight = maxHeight;
         sprite = new Sprite(new Texture(Gdx.files.internal(path)));
         sprite.setRegionWidth(width);
         sprite.setRegionHeight(height);
@@ -70,7 +71,7 @@ public class GamePlatform extends GameItem {
                 this.x -= speed;
             }
         }else{
-            if(this.y+ height >= SummerGame4.WORLD_HEIGHT)
+            if(this.y+ height >= (SummerGame4.WORLD_HEIGHT -getMaxHeight()))
                 moveUp = false;
             if(this.y<= SummerGame4.GROUND_LEVEL)
                 moveUp = true;

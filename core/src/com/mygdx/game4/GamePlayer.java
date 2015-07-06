@@ -13,7 +13,7 @@ public class GamePlayer extends GameItem {
 
     public final static int PLAYER_SIZE = 32;
     private boolean isJumping = false;
-    private final int stepValue = 12;
+    private final int stepValue = 10;
 
     public GamePlayer(int x, int y, int width, int height, String path) {
         super(x, y, width, height, path);
@@ -36,7 +36,7 @@ public class GamePlayer extends GameItem {
     @Override
     public void update(List<GameItem> gameItems) {
         if (isJumping && angle < Math.PI) {
-            this.y = groundLevel + (int)((330f) * Math.sin(angle));
+            this.y = groundLevel + (int)((170f) * Math.sin(angle));
             angle += (8)*(Math.PI/180f);
         } else {
             this.y = groundLevel;
