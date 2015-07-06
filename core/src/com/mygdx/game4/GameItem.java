@@ -5,34 +5,33 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import java.util.List;
 
 public abstract class GameItem extends Rectangle {
 
-    protected Sprite image;
+    protected Sprite sprite;
 
     public GameItem(int x, int y, int width, int height, String path) {
         super(x, y, width, height);
-
-        image = new Sprite(new Texture(Gdx.files.internal(path)));
+        sprite = new Sprite(new Texture(Gdx.files.internal(path)));
     }
 
-    //jfgfkjfg
-    public boolean overLaps(GameItem object) {
-        return x < object.x + object.width &&
-                x + width > object.x &&
-                y < object.y + object.height &&
-                y + height > object.y;
+    public Sprite getSprite() {
+        return sprite;
     }
 
-    public Sprite getImage() {
-        return image;
-    }
+    //Overstyres ved behov i barneklassene:
+    public void render(SpriteBatch batch) {}
 
-    //Maa overrides i barneklassene:
-    public abstract void update(GamePlayer player1);
-    public abstract void update(List<GameItem> gameItems);
-    public abstract void handleInput(OrthographicCamera camera);
+    //Overstyres ved behov i barneklassene:
+    public void update() {}
+
+    //Overstyres ved behov i barneklassene:
+    public void update(List<GameItem> gameItems) {};
+
+    //Overstyres ved behov i barneklassene:
+    public void handleInput(OrthographicCamera camera) {};
 }
