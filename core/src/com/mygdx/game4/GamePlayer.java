@@ -17,12 +17,7 @@ public class GamePlayer extends GameItem {
 
     public GamePlayer(int x, int y, int width, int height, String path) {
         super(x, y, width, height, path);
-        image = new Sprite(new Texture(Gdx.files.internal(path)));
-    }
-
-    @Override
-    public void update(GamePlayer player1) {
-
+        sprite = new Sprite(new Texture(Gdx.files.internal(path)));
     }
 
     private float angle = 0;

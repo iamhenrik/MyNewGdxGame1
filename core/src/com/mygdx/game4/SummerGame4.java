@@ -73,16 +73,16 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         //Flytt spiller og plattformer:
 
         for (GameItem gameItem: gameItems) {
-            gameItem.update(player1);
+            gameItem.update();
         }
         player1.update(gameItems);
 
         //Render:
         batch.begin();
         backGround.draw(batch);
-        batch.draw(player1.getImage(), player1.x, player1.y);
+        batch.draw(player1.getSprite(), player1.x, player1.y);
         for (GameItem gameItem: gameItems) {
-            batch.draw(gameItem.getImage(), gameItem.x, gameItem.y);
+            batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
         }
         //batch.draw(platform1.getImage(), platform1.x, platform1.y);
         //batch.draw(platform2.getImage(), platform2.x, platform2.y);

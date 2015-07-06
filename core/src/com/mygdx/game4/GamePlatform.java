@@ -42,9 +42,9 @@ public class GamePlatform extends GameItem {
 
         this.speed = speed;
         this.HorisontalFalseVerticalTrue = HorisontalFalseVerticalTrue;
-        image = new Sprite(new Texture(Gdx.files.internal(path)));
-        image.setRegionWidth(width);
-        image.setRegionHeight(height);
+        sprite = new Sprite(new Texture(Gdx.files.internal(path)));
+        sprite.setRegionWidth(width);
+        sprite.setRegionHeight(height);
     }
 
     public int getSpeed() {
@@ -56,7 +56,7 @@ public class GamePlatform extends GameItem {
     }
 
     @Override
-    public void update(GamePlayer player1) {
+    public void update() {
         if(HorisontalFalseVerticalTrue == false){
             if (this.x + width >= SummerGame4.WORLD_WIDTH) {
                 moveRight = false;
