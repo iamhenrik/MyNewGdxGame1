@@ -15,9 +15,14 @@ public class GamePlatform extends GameItem {
     private int speed = 4;
     private boolean HorisontalFalseVerticalTrue;
     private int maxHeight;
+    private int minHeight;
+
     private boolean moveRight = true;
     private boolean moveUp = false;
 
+    public int getMinHeight() {
+        return minHeight;
+    }
     public boolean isMoveUp() {
         return moveUp;
     }
@@ -37,12 +42,13 @@ public class GamePlatform extends GameItem {
 
 
 
-    public GamePlatform(int x, int y, int width, int height, String path, int speed, boolean HorisontalFalseVerticalTrue, int maxHeight) {
+    public GamePlatform(int x, int y, int width, int height, String path, int speed, boolean HorisontalFalseVerticalTrue, int maxHeight, int minHeight) {
         super(x, y, width, height, path);
 
         this.speed = speed;
         this.HorisontalFalseVerticalTrue = HorisontalFalseVerticalTrue;
         this.maxHeight = maxHeight;
+        this.minHeight = minHeight;
         sprite = new Sprite(new Texture(Gdx.files.internal(path)));
         sprite.setRegionWidth(width);
         sprite.setRegionHeight(height);
@@ -73,7 +79,7 @@ public class GamePlatform extends GameItem {
         }else{
             if(this.y+ height >= (SummerGame4.WORLD_HEIGHT -getMaxHeight()))
                 moveUp = false;
-            if(this.y<= SummerGame4.GROUND_LEVEL)
+            if((this.y)<= (SummerGame4.GROUND_LEVEL+getMinHeight()))
                 moveUp = true;
             if(moveUp == true){
                 this.y += speed;

@@ -1,5 +1,4 @@
 package com.mygdx.game4;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,7 +12,7 @@ public class GamePlayer extends GameItem {
 
     public final static int PLAYER_SIZE = 32;
     private boolean isJumping = false;
-    private final int stepValue = 10;
+    private final int stepValue = 12;
 
     public GamePlayer(int x, int y, int width, int height, String path) {
         super(x, y, width, height, path);
@@ -23,6 +22,8 @@ public class GamePlayer extends GameItem {
     private float angle = 0;
     private int groundLevel = SummerGame4.GROUND_LEVEL;
 
+    private boolean onPlatform = false;
+    private GamePlatform currentPlatform = null;
     /*
     private boolean overlaps(GamePlatform platform) {
         return (this.x + this.getWidth()/2f >= platform.x && this.x + this.getWidth()/2f <= platform.x + platform.getWidth());
@@ -35,44 +36,58 @@ public class GamePlayer extends GameItem {
 
     @Override
     public void update(List<GameItem> gameItems) {
+        //Sjekker hopping, y-verdi settes her:
         if (isJumping && angle < Math.PI) {
-            this.y = groundLevel + (int)((170f) * Math.sin(angle));
+            this.y = groundLevel + (int)((270f) * Math.sin(angle));
             angle += (8)*(Math.PI/180f);
+            onPlatform = false;
         } else {
             this.y = groundLevel;
             angle = 0;
             isJumping = false;
         }
 
-        //Sjekker seg selv mot alle plattformer. Dersom på en platform sjekkes ikke resten...
-        for (int i = 0; i < gameItems.size(); i++) {
-            GamePlatform pf = (GamePlatform) gameItems.get(i);
-
-            //På platformen:
-            if (this.on(pf)) {
-                groundLevel = (int) pf.y + (int) pf.getHeight();
-
-                //Spilleren skal bevege seg etter platformen:
-                if(pf.isHorisontalFalseVerticalTrue()==false){
-                    if (pf.getMoveRight())
-                        this.x += pf.getSpeed();
-                    else
-                        this.x -= pf.getSpeed();
-
-                    break; //NB!!! ut av løkka!
-                }else {
-                    if (pf.isMoveUp())
-                        this.y += pf.getSpeed();
-                    else
-                        this.y -= pf.getSpeed();
-
-                    break; //NB!!! ut av løkka!
-                }
+        //Dersom spiller på platform, flytt innafor denne:
+        if (this.onPlatform) {
+            if (this.on(currentPlatform)) {
+                this.move(currentPlatform);  //Justerer enten groundLevel eller this.x
             } else {
-                if(groundLevel >= SummerGame4.GROUND_LEVEL){
-                    groundLevel -= 5;
+                this.onPlatform = false;
+                this.currentPlatform = null;
+            }
+        }
+
+        //Dersom ikke på platform, sjekk alle platformer:
+        if (this.onPlatform == false) {
+            //Utenfor, faller evt. ned:
+            if(groundLevel >= SummerGame4.GROUND_LEVEL){
+                groundLevel -= 8;
+            }
+            //Sjekker seg selv mot alle plattformer. Dersom på en platform sjekkes ikke resten...
+            for (int i = 0; i < gameItems.size(); i++) {
+                GamePlatform pf = (GamePlatform) gameItems.get(i);
+                //På platformen:
+                if (this.on(pf)) {
+                    this.onPlatform = true;
+                    this.currentPlatform = pf;
+                    groundLevel = (int) pf.y + (int) pf.getHeight();
                 }
             }
+        }
+    }
+
+    private void move(GamePlatform pf) {
+        //Spilleren skal bevege seg etter platformen:
+        if(pf.isHorisontalFalseVerticalTrue()==false){
+            if (pf.getMoveRight())
+                this.x += pf.getSpeed();
+            else
+                this.x -= pf.getSpeed();
+        }else {
+            if (pf.isMoveUp())
+                groundLevel+= pf.getSpeed();    //NB! justerer på groundLevel!!
+            else
+                groundLevel-= pf.getSpeed();
         }
     }
 
@@ -134,14 +149,14 @@ public class GamePlayer extends GameItem {
             //if (!isJumpingDown)
             isJumping = true;
         }
-//	        if (Gdx.input.isKeyPressed(Keys.W)) {
-//	        	camera.rotate(-rotationSpeed, 0, 0, 1);
-//	        }
-//	        if (Gdx.input.isKeyPressed(Keys.E)) {
-//	        	camera.rotate(rotationSpeed, 0, 0, 1);
-//	        }
+//         if (Gdx.input.isKeyPressed(Keys.W)) {
+//          camera.rotate(-rotationSpeed, 0, 0, 1);
+//         }
+//         if (Gdx.input.isKeyPressed(Keys.E)) {
+//          camera.rotate(rotationSpeed, 0, 0, 1);
+//         }
 
-//	        camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 100/camera.viewportWidth);
+//         camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 100/camera.viewportWidth);
         camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, SummerGame4.WORLD_WIDTH / camera.viewportWidth);
         camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, SummerGame4.WORLD_HEIGHT / camera.viewportHeight);
 

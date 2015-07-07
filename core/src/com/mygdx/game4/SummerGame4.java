@@ -42,19 +42,19 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
         player1 = new GamePlayer(200, GROUND_LEVEL, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
-        gameItems.add(new GamePlatform(2500, 1200, 180, 30, "SmallPlatform.png", 0, false,0));
-        gameItems.add(new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 6, false,0));
+        gameItems.add(new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false,0,0));
+        //gameItems.add(new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 6, false,0,0));
 
-        gameItems.add(new GamePlatform(300, 350, 140, 30, "SmallPlatform.png", 5, true, 1300));
-        gameItems.add(new GamePlatform(500, 350, 140, 30, "SmallPlatform.png", 8, true, 1300));
-        gameItems.add(new GamePlatform(700, 440, 140, 30, "SmallPlatform.png", 1, true, 1300));
-        gameItems.add(new GamePlatform(900, 350, 140, 30, "SmallPlatform.png", 2, true, 1200));
-        gameItems.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 6, true, 1100));
-        gameItems.add(new GamePlatform(1300, 350, 140, 30, "SmallPlatform.png", 3, true, 1000));
-        gameItems.add(new GamePlatform(1500, 350, 140, 30, "SmallPlatform.png", 2, true, 800));
-        gameItems.add(new GamePlatform(1700, 350, 140, 30, "SmallPlatform.png", 9, true, 600));
-        gameItems.add(new GamePlatform(2000, 350, 140, 30, "SmallPlatform.png", 10, true, 400));
-        gameItems.add(new GamePlatform(2200, 350, 140, 30, "SmallPlatform.png", 10, true, 200));
+        //gameItems.add(new GamePlatform(300, 350, 140, 30, "SmallPlatform.png", 5, true, 1300));
+        //gameItems.add(new GamePlatform(500, 350, 140, 30, "SmallPlatform.png", 8, true, 1300));
+        gameItems.add(new GamePlatform(700, 440, 140, 30, "SmallPlatform.png", 4, true, 600,100));
+        gameItems.add(new GamePlatform(900, 350, 140, 30, "SmallPlatform.png", 3, true, 600, 300));
+        gameItems.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 400));
+        gameItems.add(new GamePlatform(1300, 350, 140, 30, "SmallPlatform.png", 3, true, 600, 500));
+        gameItems.add(new GamePlatform(1500, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 600));
+        gameItems.add(new GamePlatform(1700, 350, 140, 30, "SmallPlatform.png", 3, true, 600, 700));
+        gameItems.add(new GamePlatform(1900, 350, 140, 30, "SmallPlatform.png", 4, true, 400, 700));
+        gameItems.add(new GamePlatform(2150, 350, 140, 30, "SmallPlatform.png", 3, true, 200, 900));
 
         //gameItems.add(new GamePlatform(270, 280, 240, 30, "SmallPlatform.png", 4, false));
         //gameItems.add(new GamePlatform(130, 230, 180, 30, "SmallPlatform.png", 2, false));
