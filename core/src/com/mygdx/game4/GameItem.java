@@ -18,6 +18,8 @@ public abstract class GameItem extends Rectangle {
         super(x, y, width, height);
         sprite = new Sprite(new Texture(Gdx.files.internal(path)));
     }
+    public GameItem(){
+    }
 
     public Sprite getSprite() {
         return sprite;
@@ -25,11 +27,11 @@ public abstract class GameItem extends Rectangle {
 
     //Overstyres ved behov i barneklassene yes ...:
     public void render(SpriteBatch batch) {
-        //hhhh
     }
 
     //Overstyres ved behov i barneklassene:
-    public void update() {}
+    public void update() {
+    }
 
     //Overstyres ved behov i barneklassene:
     public void update(List<GameItem> gameItems) {};
@@ -37,3 +39,4 @@ public abstract class GameItem extends Rectangle {
     //Overstyres ved behov i barneklassene:
     public void handleInput(OrthographicCamera camera) {};
 }
+

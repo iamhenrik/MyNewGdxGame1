@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class GamePlayer extends GameItem {
     }
 
     private float angle = 0;
-    private int groundLevel = SummerGame4.GROUND_LEVEL;
+    private int groundLevel = MainGameClass.GROUND_LEVEL;
 
     private boolean onPlatform = false;
     private GamePlatform currentPlatform = null;
@@ -32,6 +33,11 @@ public class GamePlayer extends GameItem {
     private boolean on(GamePlatform platform) {
         return (((this.x + this.getWidth()/2f) >= (platform.x)) && ((this.x + this.getWidth()/2f <= platform.x + platform.getWidth())) &&
                 ((this.y >= platform.y)));
+    }
+
+    @Override
+    public void render(SpriteBatch spriteBatch){
+        spriteBatch.draw(this.getSprite(), this.x, this.y);
     }
 
     @Override
@@ -60,7 +66,7 @@ public class GamePlayer extends GameItem {
         //Dersom ikke på platform, sjekk alle platformer:
         if (this.onPlatform == false) {
             //Utenfor, faller evt. ned:
-            if(groundLevel >= SummerGame4.GROUND_LEVEL){
+            if(groundLevel >= MainGameClass.GROUND_LEVEL){
                 groundLevel -= 8;
             }
             //Sjekker seg selv mot alle plattformer. Dersom på en platform sjekkes ikke resten...
@@ -95,8 +101,8 @@ public class GamePlayer extends GameItem {
     public void handleInput(OrthographicCamera camera) {
         if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
             this.y += stepValue;
-            if ((this.y + GamePlayer.PLAYER_SIZE) >= (SummerGame4.WORLD_HEIGHT)) {
-                this.y = SummerGame4.WORLD_HEIGHT - GamePlayer.PLAYER_SIZE;
+            if ((this.y + GamePlayer.PLAYER_SIZE) >= (MainGameClass.WORLD_HEIGHT)) {
+                this.y = MainGameClass.WORLD_HEIGHT - GamePlayer.PLAYER_SIZE;
             }
         }
 
@@ -110,7 +116,7 @@ public class GamePlayer extends GameItem {
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             this.x -= stepValue;
             if (this.x < 1500) {
-                camera.translate(-SummerGame4.CAMERA_PAN_SPEED, 0, 0);
+                camera.translate(-MainGameClass.CAMERA_PAN_SPEED, 0, 0);
             }
             if (this.x < 0) {
                 this.x = 0;
@@ -120,10 +126,10 @@ public class GamePlayer extends GameItem {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             this.x += stepValue;
             if (this.x > 500) {
-                camera.translate(SummerGame4.CAMERA_PAN_SPEED, 0, 0);
+                camera.translate(MainGameClass.CAMERA_PAN_SPEED, 0, 0);
             }
-            if ((this.x + GamePlayer.PLAYER_SIZE) >= SummerGame4.WORLD_WIDTH) {
-                this.x = (SummerGame4.WORLD_WIDTH - GamePlayer.PLAYER_SIZE);
+            if ((this.x + GamePlayer.PLAYER_SIZE) >= MainGameClass.WORLD_WIDTH) {
+                this.x = (MainGameClass.WORLD_WIDTH - GamePlayer.PLAYER_SIZE);
             }
         }
 
@@ -157,14 +163,14 @@ public class GamePlayer extends GameItem {
 //         }
 
 //         camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, 100/camera.viewportWidth);
-        camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, SummerGame4.WORLD_WIDTH / camera.viewportWidth);
-        camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, SummerGame4.WORLD_HEIGHT / camera.viewportHeight);
+        camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, MainGameClass.WORLD_WIDTH / camera.viewportWidth);
+        camera.zoom = MathUtils.clamp(camera.zoom, 0.1f, MainGameClass.WORLD_HEIGHT / camera.viewportHeight);
 
         float effectiveViewportWidth = camera.viewportWidth * camera.zoom;
         float effectiveViewportHeight = camera.viewportHeight * camera.zoom;
 
-        camera.position.x = MathUtils.clamp(camera.position.x, effectiveViewportWidth / 2f, SummerGame4.WORLD_WIDTH - effectiveViewportWidth / 2f);
-        camera.position.y = MathUtils.clamp(camera.position.y, effectiveViewportHeight / 2f, SummerGame4.WORLD_HEIGHT - effectiveViewportHeight / 2f);
+        camera.position.x = MathUtils.clamp(camera.position.x, effectiveViewportWidth / 2f, MainGameClass.WORLD_WIDTH - effectiveViewportWidth / 2f);
+        camera.position.y = MathUtils.clamp(camera.position.y, effectiveViewportHeight / 2f, MainGameClass.WORLD_HEIGHT - effectiveViewportHeight / 2f);
     }
 
 }

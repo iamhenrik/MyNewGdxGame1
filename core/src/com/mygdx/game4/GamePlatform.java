@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class GamePlatform extends GameItem {
     @Override
     public void update() {
         if(HorisontalFalseVerticalTrue == false){
-            if (this.x + width >= SummerGame4.WORLD_WIDTH) {
+            if (this.x + width >= MainGameClass.WORLD_WIDTH) {
                 moveRight = false;
             }
             if (this.x <= 0) {
@@ -77,9 +78,9 @@ public class GamePlatform extends GameItem {
                 this.x -= speed;
             }
         }else{
-            if(this.y+ height >= (SummerGame4.WORLD_HEIGHT -getMaxHeight()))
+            if(this.y+ height >= (MainGameClass.WORLD_HEIGHT -getMaxHeight()))
                 moveUp = false;
-            if((this.y)<= (SummerGame4.GROUND_LEVEL+getMinHeight()))
+            if((this.y)<= (MainGameClass.GROUND_LEVEL+getMinHeight()))
                 moveUp = true;
             if(moveUp == true){
                 this.y += speed;
@@ -92,6 +93,10 @@ public class GamePlatform extends GameItem {
     @Override
     public void update(List<GameItem> gameItems) {
 
+    }
+    @Override
+    public void render(SpriteBatch batch) {
+        batch.draw(this.getSprite(), this.x, this.y);
     }
 
     @Override

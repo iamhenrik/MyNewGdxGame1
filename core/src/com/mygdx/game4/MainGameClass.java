@@ -13,7 +13,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SummerGame4 extends ApplicationAdapter implements GestureDetector.GestureListener {
+public class MainGameClass extends ApplicationAdapter implements GestureDetector.GestureListener {
     SpriteBatch batch;
     private GamePlayer player1;
 
@@ -22,13 +22,17 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
     private OrthographicCamera camera;
     private float rotationSpeed;
     private Sprite backGround;
+    private GameFigure man;
+    private GameSwirl swirl;
+    private GameExplosion boom;
+    private GameAnimations ufo;
     //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
     public static final int WORLD_WIDTH = 3000;
     public static final int WORLD_HEIGHT = 1500;
 
     public final static int GRAVITY = 10;
     public final static float CAMERA_PAN_SPEED = 18;
-    public static final int GROUND_LEVEL = 115;
+    public static final int GROUND_LEVEL = 125;
 
 
     @Override
@@ -41,7 +45,11 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         backGround.setPosition(0, 0);
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
-        player1 = new GamePlayer(200, GROUND_LEVEL, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
+        man = new GameFigure();
+        swirl = new GameSwirl(2350, 1205);
+        boom = new GameExplosion(800, 700);
+        ufo = new GameAnimations(600, 1000);
+        player1 = new GamePlayer(750, 900, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
         gameItems.add(new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false,0,0));
         //gameItems.add(new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 6, false,0,0));
 
@@ -90,14 +98,18 @@ public class SummerGame4 extends ApplicationAdapter implements GestureDetector.G
         //Render:
         batch.begin();
         backGround.draw(batch);
-        batch.draw(player1.getSprite(), player1.x, player1.y);
+
+
+        man.render(batch);
+        swirl.render(batch);
+        boom.render(batch);
+        ufo.render(batch);
+        player1.render(batch);
         for (GameItem gameItem: gameItems) {
-            batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
+           batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
         }
-        //batch.draw(platform1.getImage(), platform1.x, platform1.y);
-        //batch.draw(platform2.getImage(), platform2.x, platform2.y);
         batch.end();
-//		System.out.println("player1 x verdi: " + player1.x + "y verdi: "+ player1.y);
+
     }
 
     /*public void jumpspeed() {
