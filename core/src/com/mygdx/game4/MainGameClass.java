@@ -46,9 +46,9 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
         man = new GameFigure();
-        swirl = new GameSwirl(2350, 1205);
+        swirl = new GameSwirl(2350, 400);
         boom = new GameExplosion(800, 700);
-        ufo = new GameAnimations(600, 1000);
+        ufo = new GameAnimations(2350, 1170);
         player1 = new GamePlayer(750, 900, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
         gameItems.add(new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false,0,0));
         //gameItems.add(new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 6, false,0,0));

@@ -13,8 +13,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GameAnimations extends GameItem {
 
-    private static final int FRAME_COLS = 10;
-    private static final int FRAME_ROWS = 5;
+    private static final int FRAME_COLS = 8;
+    private static final int FRAME_ROWS = 4;
     private Animation walkAnimation;
     private Texture walkSheet;
     private TextureRegion[] walkFrames;
@@ -27,7 +27,7 @@ public class GameAnimations extends GameItem {
     public GameAnimations(float xPosition, float yPosition) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        walkSheet = new Texture(Gdx.files.internal("toon.png"));
+        walkSheet = new Texture(Gdx.files.internal("SlimeAni3.png"));
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
 
@@ -42,8 +42,7 @@ public class GameAnimations extends GameItem {
 
             }
         }
-        walkAnimation = new Animation(0.015f, walkFrames);
-        //spriteBatch = new SpriteBatch();
+        walkAnimation = new Animation(0.033f, walkFrames);
 
         stateTime = 0f;
 
@@ -60,7 +59,6 @@ public class GameAnimations extends GameItem {
         currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 
         spriteBatch.draw(currentFrame, xPosition, yPosition);
-
         //spriteBatch.draw(sprite, this.x, this.y, width/2f, height/2, width, height, 1, 1, 0);
         //spriteBatch.end();
     }
