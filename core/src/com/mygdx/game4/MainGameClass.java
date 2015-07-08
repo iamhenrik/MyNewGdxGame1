@@ -15,7 +15,7 @@ import java.util.List;
 
 public class MainGameClass extends ApplicationAdapter implements GestureDetector.GestureListener {
     SpriteBatch batch;
-    private GamePlayer player1;
+    private GamePlayer2 player1;
 
     private List<GameItem> gameItems;
 
@@ -26,6 +26,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     private GameSwirl swirl;
     private GameExplosion boom;
     private GameAnimations ufo;
+
     //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
     public static final int WORLD_WIDTH = 3000;
     public static final int WORLD_HEIGHT = 1500;
@@ -49,20 +50,20 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         swirl = new GameSwirl(2350, 400);
         boom = new GameExplosion(800, 700);
         ufo = new GameAnimations(2350, 1170);
-        player1 = new GamePlayer(750, 900, GamePlayer.PLAYER_SIZE, GamePlayer.PLAYER_SIZE, "player2.png");
+        player1 = new GamePlayer2(750, 900, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAni3.png");
         gameItems.add(new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false,0,0));
         //gameItems.add(new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 6, false,0,0));
 
         //gameItems.add(new GamePlatform(300, 350, 140, 30, "SmallPlatform.png", 5, true, 1300));
         //gameItems.add(new GamePlatform(500, 350, 140, 30, "SmallPlatform.png", 8, true, 1300));
-        gameItems.add(new GamePlatform(700, 440, 140, 30, "SmallPlatform.png", 4, true, 600,100));
-        gameItems.add(new GamePlatform(900, 350, 140, 30, "SmallPlatform.png", 3, true, 600, 300));
-        gameItems.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 400));
-        gameItems.add(new GamePlatform(1300, 350, 140, 30, "SmallPlatform.png", 3, true, 600, 500));
-        gameItems.add(new GamePlatform(1500, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 600));
-        gameItems.add(new GamePlatform(1700, 350, 140, 30, "SmallPlatform.png", 3, true, 600, 700));
-        gameItems.add(new GamePlatform(1900, 350, 140, 30, "SmallPlatform.png", 4, true, 400, 700));
-        gameItems.add(new GamePlatform(2150, 350, 140, 30, "SmallPlatform.png", 3, true, 200, 900));
+        gameItems.add(new GamePlatform(700, 440, 300, 30, "SmallPlatform.png", 4, true, 600,100));
+        gameItems.add(new GamePlatform(900, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 300));
+        //gameItems.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 400));
+        gameItems.add(new GamePlatform(1300, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 500));
+        //gameItems.add(new GamePlatform(1500, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 600));
+        gameItems.add(new GamePlatform(1700, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 700));
+        //gameItems.add(new GamePlatform(1900, 350, 140, 30, "SmallPlatform.png", 4, true, 400, 700));
+        gameItems.add(new GamePlatform(2150, 350, 300, 30, "SmallPlatform.png", 3, true, 200, 900));
 
         //gameItems.add(new GamePlatform(270, 280, 240, 30, "SmallPlatform.png", 4, false));
         //gameItems.add(new GamePlatform(130, 230, 180, 30, "SmallPlatform.png", 2, false));
@@ -103,7 +104,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         man.render(batch);
         swirl.render(batch);
         boom.render(batch);
-        ufo.render(batch);
+        //ufo.render(batch);
         player1.render(batch);
         for (GameItem gameItem: gameItems) {
            batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);

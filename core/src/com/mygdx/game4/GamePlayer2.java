@@ -3,41 +3,66 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.List;
 
-public class GamePlayer extends GameItem {
+public class GamePlayer2 extends GameItem {
 
-    public final static int PLAYER_SIZE = 32;
+    public final static int PLAYER_SIZE = 16;
     private boolean isJumping = false;
     private final int stepValue = 12;
-
-    public GamePlayer(int x, int y, int width, int height, String path) {
-        super(x, y, width, height, path);
-        sprite = new Sprite(new Texture(Gdx.files.internal(path)));
-    }
 
     private float angle = 0;
     private int groundLevel = MainGameClass.GROUND_LEVEL;
 
     private boolean onPlatform = false;
     private GamePlatform currentPlatform = null;
-    /*
-    private boolean overlaps(GamePlatform platform) {
-        return (this.x + this.getWidth()/2f >= platform.x && this.x + this.getWidth()/2f <= platform.x + platform.getWidth());
-    }*/
 
-    private boolean on(GamePlatform platform) {
-        return (((this.x + this.getWidth()/2f) >= (platform.x)) && ((this.x + this.getWidth()/2f <= platform.x + platform.getWidth())) &&
-                ((this.y >= platform.y)));
+    private static final int FRAME_COLS = 8;
+    private static final int FRAME_ROWS = 4;
+    private Animation walkAnimation;
+    private Texture walkSheet;
+    private TextureRegion[] walkFrames;
+    //private SpriteBatch spriteBatch;
+    private TextureRegion currentFrame;
+    private float stateTime;
+
+    public GamePlayer2(int x, int y, int width, int height, String path) {
+        super(x, y, width, height, path);
+        //sprite = new Sprite(new Texture(Gdx.files.internal(path)));
+        walkSheet = new Texture(Gdx.files.internal(path));
+
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
+
+        walkFrames = new TextureRegion[(FRAME_COLS * FRAME_ROWS)];
+
+        int index = 0;
+        for (int i = 0; i < FRAME_ROWS; i++) {
+            for (int j = 0; j < FRAME_COLS; j++) {
+
+                walkFrames[index++] = tmp[i][j];
+
+            }
+        }
+        walkAnimation = new Animation(0.033f, walkFrames);
+
+        stateTime = 0f;
     }
 
     @Override
     public void render(SpriteBatch spriteBatch){
-        spriteBatch.draw(this.getSprite(), this.x, this.y);
+        stateTime += Gdx.graphics.getDeltaTime();
+
+        currentFrame = walkAnimation.getKeyFrame(stateTime, true);
+
+        spriteBatch.draw(currentFrame, this.x-50, this.y-50);
+
+
     }
 
     @Override
@@ -81,6 +106,11 @@ public class GamePlayer extends GameItem {
             }
         }
     }
+    private boolean on(GamePlatform platform) {
+        return (((this.x + this.getWidth()/2f) >= (platform.x)) && ((this.x + this.getWidth()/2f <= platform.x + platform.getWidth())) &&
+                ((this.y >= platform.y)));
+    }
+
 
     private void move(GamePlatform pf) {
         //Spilleren skal bevege seg etter platformen:
@@ -101,8 +131,8 @@ public class GamePlayer extends GameItem {
     public void handleInput(OrthographicCamera camera) {
         if (Gdx.input.isKeyPressed(Input.Keys.Y)) {
             this.y += stepValue;
-            if ((this.y + GamePlayer.PLAYER_SIZE) >= (MainGameClass.WORLD_HEIGHT)) {
-                this.y = MainGameClass.WORLD_HEIGHT - GamePlayer.PLAYER_SIZE;
+            if ((this.y + GamePlayer2.PLAYER_SIZE) >= (MainGameClass.WORLD_HEIGHT)) {
+                this.y = MainGameClass.WORLD_HEIGHT - GamePlayer2.PLAYER_SIZE;
             }
         }
 
@@ -113,7 +143,7 @@ public class GamePlayer extends GameItem {
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.O)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             this.x -= stepValue;
             if (this.x < 1500) {
                 camera.translate(-MainGameClass.CAMERA_PAN_SPEED, 0, 0);
@@ -123,13 +153,13 @@ public class GamePlayer extends GameItem {
             }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             this.x += stepValue;
             if (this.x > 500) {
                 camera.translate(MainGameClass.CAMERA_PAN_SPEED, 0, 0);
             }
-            if ((this.x + GamePlayer.PLAYER_SIZE) >= MainGameClass.WORLD_WIDTH) {
-                this.x = (MainGameClass.WORLD_WIDTH - GamePlayer.PLAYER_SIZE);
+            if ((this.x + GamePlayer2.PLAYER_SIZE) >= MainGameClass.WORLD_WIDTH) {
+                this.x = (MainGameClass.WORLD_WIDTH - GamePlayer2.PLAYER_SIZE);
             }
         }
 

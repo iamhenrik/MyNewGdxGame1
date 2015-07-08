@@ -68,10 +68,10 @@ public class GameSwirl extends GameItem {
         //spriteBatch.end();
     }
     public void handleInput(){
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if(Gdx.input.isKeyPressed(Input.Keys.N)){
             this.x -= 12;
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        if(Gdx.input.isKeyPressed(Input.Keys.M)){
             this.x += 12;
         }
     }
