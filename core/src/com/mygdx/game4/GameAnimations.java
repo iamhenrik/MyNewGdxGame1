@@ -16,8 +16,8 @@ import java.util.List;
 
 public class GameAnimations extends GameItem {
 
-    private static final int FRAME_COLS = 8;
-    private static final int FRAME_ROWS = 4;
+    private static final int FRAME_COLS = 2;
+    private static final int FRAME_ROWS = 1;
     private Animation walkAnimation;
     private Texture walkSheet;
     private TextureRegion[] walkFrames;
@@ -41,7 +41,7 @@ public class GameAnimations extends GameItem {
     public GameAnimations(float x, float y) {
         this.x = x;
         this.x = y;
-        walkSheet = new Texture(Gdx.files.internal("SlimeAni3.png"));
+        walkSheet = new Texture(Gdx.files.internal("Steely.png"));
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
 
@@ -67,6 +67,7 @@ public class GameAnimations extends GameItem {
 
     @Override
     public void render(SpriteBatch spriteBatch) {
+        handleInput();
         stateTime += Gdx.graphics.getDeltaTime();
 
         currentFrame = walkAnimation.getKeyFrame(stateTime, true);

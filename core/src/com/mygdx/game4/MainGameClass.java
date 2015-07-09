@@ -17,15 +17,17 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     SpriteBatch batch;
     private GamePlayer2 player1;
 
-    private List<GameItem> gameItems;
+    private List<GameItem> gamePlatforms;
 
     private OrthographicCamera camera;
     private float rotationSpeed;
     private Sprite backGround;
     private GameFigure man;
     private GameSwirl swirl;
+    private GameSwirl swirl2;
     private GameExplosion boom;
     private GameAnimations ufo;
+    private ArrayList<GameNPC> gameNPCs;
 
     //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
     public static final int WORLD_WIDTH = 3000;
@@ -38,8 +40,8 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     @Override
     public void create() {
-        gameItems = new ArrayList<GameItem>();
-
+        gamePlatforms = new ArrayList<GameItem>();
+        gameNPCs = new ArrayList<GameNPC>();
         rotationSpeed = 0.5f;
         batch = new SpriteBatch();
         backGround = new Sprite(new Texture("BackGround.jpg"));
@@ -47,28 +49,28 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
         man = new GameFigure();
-        swirl = new GameSwirl(2350, 400);
-        boom = new GameExplosion(800, 700);
+        swirl = new GameSwirl(2350, GROUND_LEVEL, "CashMoney.png");
+        swirl2 = new GameSwirl(2450, GROUND_LEVEL, "CashSack.png");
+        boom = new GameExplosion(2000, 400);
         ufo = new GameAnimations(2350, 1170);
         player1 = new GamePlayer2(750, 900, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAni3.png");
-        gameItems.add(new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false,0,0));
-        //gameItems.add(new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 6, false,0,0));
+        GamePlatform platform1 = new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false, 0, 0);
+        gamePlatforms.add(platform1);
+        GamePlatform platform2 = new GamePlatform(700, 440, 300, 30, "SmallPlatform.png", 4, true, 600, 100);
+        gamePlatforms.add(platform2);
+        GamePlatform platform3 = new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 1, false, 0, 0);
+        gamePlatforms.add(platform3);
 
-        //gameItems.add(new GamePlatform(300, 350, 140, 30, "SmallPlatform.png", 5, true, 1300));
-        //gameItems.add(new GamePlatform(500, 350, 140, 30, "SmallPlatform.png", 8, true, 1300));
-        gameItems.add(new GamePlatform(700, 440, 300, 30, "SmallPlatform.png", 4, true, 600,100));
-        gameItems.add(new GamePlatform(900, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 300));
-        //gameItems.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 400));
-        gameItems.add(new GamePlatform(1300, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 500));
-        //gameItems.add(new GamePlatform(1500, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 600));
-        gameItems.add(new GamePlatform(1700, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 700));
-        //gameItems.add(new GamePlatform(1900, 350, 140, 30, "SmallPlatform.png", 4, true, 400, 700));
-        gameItems.add(new GamePlatform(2150, 350, 300, 30, "SmallPlatform.png", 3, true, 200, 900));
+        gamePlatforms.add(new GamePlatform(900, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 300));
+        //gamePlatforms.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 400));
+        gamePlatforms.add(new GamePlatform(1300, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 500));
+        //gamePlatforms.add(new GamePlatform(1500, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 600));
+        gamePlatforms.add(new GamePlatform(1700, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 700));
+        //gamePlatforms.add(new GamePlatform(1900, 350, 140, 30, "SmallPlatform.png", 4, true, 400, 700));
+        gamePlatforms.add(new GamePlatform(2150, 350, 300, 30, "SmallPlatform.png", 3, true, 200, 900));
 
-        //gameItems.add(new GamePlatform(270, 280, 240, 30, "SmallPlatform.png", 4, false));
-        //gameItems.add(new GamePlatform(130, 230, 180, 30, "SmallPlatform.png", 2, false));
-
-
+        GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "SlimeAni3.png");
+        gameNPCs.add(npc1);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -91,10 +93,14 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         //Flytt spiller og plattformer:
 
-        for (GameItem gameItem: gameItems) {
+        for (GameItem gameItem: gamePlatforms) {
             gameItem.update();
         }
-        player1.update(gameItems);
+        player1.update(gamePlatforms);
+
+        for(GameNPC gameNPC: gameNPCs){
+            gameNPC.update();
+        }
 
         //Render:
         batch.begin();
@@ -103,10 +109,14 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         man.render(batch);
         swirl.render(batch);
+        swirl2.render(batch);
         boom.render(batch);
         //ufo.render(batch);
         player1.render(batch);
-        for (GameItem gameItem: gameItems) {
+        for(GameNPC gameNPC: gameNPCs){
+            gameNPC.render(batch);
+        }
+        for (GameItem gameItem: gamePlatforms) {
            batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
         }
         batch.end();

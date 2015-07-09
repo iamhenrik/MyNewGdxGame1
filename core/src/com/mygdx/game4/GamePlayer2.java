@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GamePlayer2 extends GameItem {
 
-    public final static int PLAYER_SIZE = 16;
+    public final static int PLAYER_SIZE = 0;
     private boolean isJumping = false;
     private final int stepValue = 12;
 
@@ -60,7 +60,7 @@ public class GamePlayer2 extends GameItem {
 
         currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 
-        spriteBatch.draw(currentFrame, this.x-50, this.y-50);
+        spriteBatch.draw(currentFrame, this.x-180, this.y-50);
 
 
     }
@@ -69,7 +69,7 @@ public class GamePlayer2 extends GameItem {
     public void update(List<GameItem> gameItems) {
         //Sjekker hopping, y-verdi settes her:
         if (isJumping && angle < Math.PI) {
-            this.y = groundLevel + (int)((270f) * Math.sin(angle));
+            this.y = groundLevel + (int)((310f) * Math.sin(angle));
             angle += (8)*(Math.PI/180f);
             onPlatform = false;
         } else {
