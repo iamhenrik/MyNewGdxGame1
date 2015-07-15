@@ -20,7 +20,7 @@ public class GamePlayer extends GameItem {
         sprite = new Sprite(new Texture(Gdx.files.internal(path)));
     }
 
-    private float angle = 0;
+    private float angle = 10;
     private int groundLevel = MainGameClass.GROUND_LEVEL;
 
     private boolean onPlatform = false;
@@ -44,8 +44,13 @@ public class GamePlayer extends GameItem {
     public void update(List<GameItem> gameItems) {
         //Sjekker hopping, y-verdi settes her:
         if (isJumping && angle < Math.PI) {
-            this.y = groundLevel + (int)((270f) * Math.sin(angle));
+
+            this.y = groundLevel + angle;
+
+                    //(int)((270f) * Math.sin(angle));
+
             angle += (8)*(Math.PI/180f);
+
             onPlatform = false;
         } else {
             this.y = groundLevel;
