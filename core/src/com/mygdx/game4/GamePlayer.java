@@ -14,6 +14,8 @@ public class GamePlayer extends GameItem {
     public final static int PLAYER_SIZE = 32;
     private boolean isJumping = false;
     private final int stepValue = 12;
+    public float yVel = 17;
+    public float gravity = 0.9f;
 
     public GamePlayer(int x, int y, int width, int height, String path) {
         super(x, y, width, height, path);
@@ -43,10 +45,17 @@ public class GamePlayer extends GameItem {
     @Override
     public void update(List<GameItem> gameItems) {
         //Sjekker hopping, y-verdi settes her:
-        if (isJumping && angle < Math.PI) {
-            this.y = groundLevel + (int)((270f) * Math.sin(angle));
-            angle += (8)*(Math.PI/180f);
+        if (isJumping) {
+            yVel -= gravity;
+            this.y += yVel;
+
             onPlatform = false;
+
+            if(this.y <= groundLevel){
+                this.y = groundLevel;
+                isJumping = false;
+                yVel = 17f;
+            }
         } else {
             this.y = groundLevel;
             angle = 0;
