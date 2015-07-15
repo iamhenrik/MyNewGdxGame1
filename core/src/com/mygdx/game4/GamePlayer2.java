@@ -25,8 +25,8 @@ public class GamePlayer2 extends GameItem {
 
     private static final int FRAME_COLS = 8;
     private static final int FRAME_ROWS = 4;
-    private float yVel = 35;
-    private float gravity = 1.25f;
+    private float yVel = 25;
+    private float gravity = 1.5f;
     private Animation walkAnimation;
     private Texture walkSheet;
     private TextureRegion[] walkFrames;
@@ -63,6 +63,7 @@ public class GamePlayer2 extends GameItem {
         currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 
         spriteBatch.draw(currentFrame, this.x-180, this.y-50);
+        //spriteBatch.draw(currentFrame, this.x, this.y);
 
 
     }
@@ -74,13 +75,14 @@ public class GamePlayer2 extends GameItem {
 
             yVel -= gravity;
             this.y += yVel;
+            System.out.println(this.getWidth());
 
             onPlatform = false;
 
             if(this.y <= groundLevel){
                 this.y = groundLevel;
                 isJumping = false;
-                yVel = 35f;
+                yVel = 25f;
                 }
         } else {
             this.y = groundLevel;
@@ -116,9 +118,33 @@ public class GamePlayer2 extends GameItem {
             }
         }
     }
+    private boolean sjekkRight(GamePlatform platform){
+        for(int i=0; i<90; i++) {
+            int inkr = 0;
+            if ((this.x += inkr) >= platform.x) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+    private boolean sjekkLeft(GamePlatform platform){
+        for(int i=0; i<90; i++) {
+            int inkr = 0;
+            if ((this.x += inkr) >= platform.x + platform.getWidth()) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
     private boolean on(GamePlatform platform) {
-        return (((this.x + this.getWidth()/2f) >= (platform.x)) && ((this.x + this.getWidth()/2f <= platform.x + platform.getWidth())) &&
+        return (((this.x + this.getWidth()/2f) >= (platform.x)) &&
+                ((this.x + this.getWidth()/2f <= platform.x + platform.getWidth())) &&
                 ((this.y >= platform.y)));
+        //return (sjekkRight(platform) == true &&
+          //      sjekkLeft(platform) == true &&
+            //    ((this.y >= platform.y)));
     }
 
 
@@ -158,8 +184,8 @@ public class GamePlayer2 extends GameItem {
             if (this.x < 1500) {
                 camera.translate(-MainGameClass.CAMERA_PAN_SPEED, 0, 0);
             }
-            if (this.x < 0) {
-                this.x = 0;
+            if (this.x - 100 <= 0) {
+                this.x = 0 + 100;
             }
         }
 
@@ -168,8 +194,8 @@ public class GamePlayer2 extends GameItem {
             if (this.x > 500) {
                 camera.translate(MainGameClass.CAMERA_PAN_SPEED, 0, 0);
             }
-            if ((this.x + GamePlayer2.PLAYER_SIZE) >= MainGameClass.WORLD_WIDTH) {
-                this.x = (MainGameClass.WORLD_WIDTH - GamePlayer2.PLAYER_SIZE);
+            if ((this.x + 100) >= MainGameClass.WORLD_WIDTH) {
+                this.x = (MainGameClass.WORLD_WIDTH - 100);
             }
         }
 

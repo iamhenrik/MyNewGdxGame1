@@ -38,6 +38,9 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     public final static float CAMERA_PAN_SPEED = 18;
     public static final int GROUND_LEVEL = 79;
 
+    private int xValueTiles = -270;
+    private int xValuePlatforms = 0;
+
 
     @Override
     public void create() {
@@ -56,46 +59,35 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         boom = new GameExplosion(2000, 400);
         ufo = new GameAnimations(2350, 1170);
 
-        GameMap tile1 = new GameMap(0,0,270,79,"TileWithGround.png");
-        Ambient.add(tile1);
-        GameMap tile2 = new GameMap(270,0,270,79,"TileWithGround.png");
-        Ambient.add(tile2);
-        GameMap tile3 = new GameMap(540,0, 270,79,"TileWithGround.png");
-        Ambient.add(tile3);
-        GameMap tile4 = new GameMap(810,0,270,79,"TileWithGround.png");
-        Ambient.add(tile4);
-        GameMap tile5 = new GameMap(1080,0,270,79,"TileWithGround.png");
-        Ambient.add(tile5);
-        GameMap tile6 = new GameMap(1350,0,270,79,"TileWithGround.png");
-        Ambient.add(tile6);
-        GameMap tile7 = new GameMap(1620,0,270,79,"TileWithGround.png");
-        Ambient.add(tile7);
-        GameMap tile8 = new GameMap(1890,0,270,79,"TileWithGround.png");
-        Ambient.add(tile8);
-        GameMap tile9 = new GameMap(2160,0,270,79,"TileWithGround.png");
-        Ambient.add(tile9);
-        GameMap tile10 = new GameMap(2430,0,270,79,"TileWithGround.png");
-        Ambient.add(tile10);
-        GameMap tile11 = new GameMap(2700,0,270,79,"TileWithGround.png");
-        Ambient.add(tile11);
+        for(int i = 0; i<10; i++){
+            xValueTiles +=270;
+           Ambient.add(new GameMap(xValueTiles,0,270,79,"TileWithGround.png"));
+        }
 
+        GameMap cloud1 = new GameMap(200, 1100, 810,317, "CloudOne.png");
+        Ambient.add(cloud1);
+        GameMap cloud2 = new GameMap(1200, 980, 605,224,"CloudTwo.png");
+        Ambient.add(cloud2);
+        GameMap cloud3 = new GameMap(2000, 890, 688,579,"CloudThree.png");
+        Ambient.add(cloud3);
+        GameMap building1 = new GameMap(400, 79, 810,325,"BuildingsOne.png");
+        Ambient.add(building1);
+        GameMap bigTree = new GameMap(2300, 79, 388,685,"BigTree.png");
+        Ambient.add(bigTree);
 
         player1 = new GamePlayer2(GROUND_LEVEL, 300, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAni3.png");
-
-        //GamePlatform platform1 = new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false, 0, 0);
-        //gamePlatforms.add(platform1);
-        //GamePlatform platform2 = new GamePlatform(700, 440, 300, 30, "SmallPlatform.png", 4, true, 600, 100);
-        //gamePlatforms.add(platform2);
-        //GamePlatform platform3 = new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 1, false, 0, 0);
-        //gamePlatforms.add(platform3);
-
-        //gamePlatforms.add(new GamePlatform(900, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 300));
-        //gamePlatforms.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 400));
-        //gamePlatforms.add(new GamePlatform(1300, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 500));
-        //gamePlatforms.add(new GamePlatform(1500, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 600));
-        //gamePlatforms.add(new GamePlatform(1700, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 700));
-        //gamePlatforms.add(new GamePlatform(1900, 350, 140, 30, "SmallPlatform.png", 4, true, 400, 700));
-        //gamePlatforms.add(new GamePlatform(2150, 350, 300, 30, "SmallPlatform.png", 3, true, 200, 900));
+        gamePlatforms.add(new GamePlatform(2400, 370, 81,63,"SnowPlatformSmall.png", 2, true, 900, 300));
+        gamePlatforms.add(new GamePlatform(300, 800, 81,63,"SnowPlatformSmall.png", 2, true, 600, 600));
+        gamePlatforms.add(new GamePlatform(2300, 1130, 340, 126, "SnowPlatformBig.png",0,false,0,0));
+        gamePlatforms.add(new GamePlatform(250, 150, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
+        gamePlatforms.add(new GamePlatform(2330, 1050, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
+        for(int i =0; i<5; i++){
+            xValuePlatforms += 400;
+            gamePlatforms.add(new GamePlatform(xValuePlatforms+200, 330, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
+            gamePlatforms.add(new GamePlatform(xValuePlatforms, 620, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
+            gamePlatforms.add(new GamePlatform(xValuePlatforms+200, 920, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
+            System.out.println("lol " + xValuePlatforms);
+        }
 
         //GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "CashSack.png");
         //gameNPCs.add(npc1);
@@ -121,9 +113,9 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         //Flytt spiller og plattformer:
 
-        //for (GameItem gameItem: gamePlatforms) {
-        //    gameItem.update();
-        //}
+        for (GameItem gameItem: gamePlatforms) {
+            gameItem.update();
+        }
         player1.update(gamePlatforms);
 
         //for(GameNPC gameNPC: gameNPCs){
@@ -140,7 +132,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         boom.render(batch);
         //ufo.render(batch);
-        player1.render(batch);
+
         swirl2.render(batch);
         for(GameMap GameMap: Ambient){
             GameMap.render(batch);
@@ -150,9 +142,10 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         for(GameNPC gameNPC: gameNPCs){
             gameNPC.render(batch);
         }
-        //for (GameItem gameItem: gamePlatforms) {
-        //   batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
-        //}
+        player1.render(batch);
+        for (GameItem gameItem: gamePlatforms) {
+           batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
+        }
         batch.end();
 
     }
