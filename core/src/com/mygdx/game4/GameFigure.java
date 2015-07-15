@@ -68,7 +68,8 @@ public class GameFigure extends GameItem {
         walkAnimationStill = new Animation(0.025f, walkFrameStill);
         //spriteBatch = new SpriteBatch();                // #12
 
-        stateTime = 0f;                         // #13
+        stateTime = 0f;
+                                 // #13
 
     }
 
