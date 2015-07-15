@@ -28,31 +28,58 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     private GameExplosion boom;
     private GameAnimations ufo;
     private ArrayList<GameNPC> gameNPCs;
+    private ArrayList<GameMap> Ambient;
 
     //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
-    public static final int WORLD_WIDTH = 3000;
-    public static final int WORLD_HEIGHT = 1500;
+    public static final int WORLD_WIDTH = 2700; //1340;
+    public static final int WORLD_HEIGHT = 1500; //975;
 
     public final static int GRAVITY = 10;
     public final static float CAMERA_PAN_SPEED = 18;
-    public static final int GROUND_LEVEL = 125;
+    public static final int GROUND_LEVEL = 79;
 
 
     @Override
     public void create() {
+        Ambient = new ArrayList<GameMap>();
         gamePlatforms = new ArrayList<GameItem>();
         gameNPCs = new ArrayList<GameNPC>();
         rotationSpeed = 0.5f;
         batch = new SpriteBatch();
-        backGround = new Sprite(new Texture("BackGround.jpg"));
+        backGround = new Sprite(new Texture("MapleBackGroundPng.png"));
         backGround.setPosition(0, 0);
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
         man = new GameFigure();
-        swirl = new GameSwirl(2350, GROUND_LEVEL, "CashMoney.png");
+        swirl = new GameSwirl(2350, GROUND_LEVEL, "AlisharAni20Frames3.png");
         swirl2 = new GameSwirl(2450, GROUND_LEVEL, "CashSack.png");
         boom = new GameExplosion(2000, 400);
         ufo = new GameAnimations(2350, 1170);
+
+        GameMap tile1 = new GameMap(0,0,270,79,"TileWithGround.png");
+        Ambient.add(tile1);
+        GameMap tile2 = new GameMap(270,0,270,79,"TileWithGround.png");
+        Ambient.add(tile2);
+        GameMap tile3 = new GameMap(540,0, 270,79,"TileWithGround.png");
+        Ambient.add(tile3);
+        GameMap tile4 = new GameMap(810,0,270,79,"TileWithGround.png");
+        Ambient.add(tile4);
+        GameMap tile5 = new GameMap(1080,0,270,79,"TileWithGround.png");
+        Ambient.add(tile5);
+        GameMap tile6 = new GameMap(1350,0,270,79,"TileWithGround.png");
+        Ambient.add(tile6);
+        GameMap tile7 = new GameMap(1620,0,270,79,"TileWithGround.png");
+        Ambient.add(tile7);
+        GameMap tile8 = new GameMap(1890,0,270,79,"TileWithGround.png");
+        Ambient.add(tile8);
+        GameMap tile9 = new GameMap(2160,0,270,79,"TileWithGround.png");
+        Ambient.add(tile9);
+        GameMap tile10 = new GameMap(2430,0,270,79,"TileWithGround.png");
+        Ambient.add(tile10);
+        GameMap tile11 = new GameMap(2700,0,270,79,"TileWithGround.png");
+        Ambient.add(tile11);
+
+
         player1 = new GamePlayer2(750, 900, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAni3.png");
         GamePlatform platform1 = new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false, 0, 0);
         gamePlatforms.add(platform1);
@@ -61,15 +88,15 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         GamePlatform platform3 = new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 1, false, 0, 0);
         gamePlatforms.add(platform3);
 
-        gamePlatforms.add(new GamePlatform(900, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 300));
+        //gamePlatforms.add(new GamePlatform(900, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 300));
         //gamePlatforms.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 400));
-        gamePlatforms.add(new GamePlatform(1300, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 500));
+        //gamePlatforms.add(new GamePlatform(1300, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 500));
         //gamePlatforms.add(new GamePlatform(1500, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 600));
-        gamePlatforms.add(new GamePlatform(1700, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 700));
+        //gamePlatforms.add(new GamePlatform(1700, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 700));
         //gamePlatforms.add(new GamePlatform(1900, 350, 140, 30, "SmallPlatform.png", 4, true, 400, 700));
-        gamePlatforms.add(new GamePlatform(2150, 350, 300, 30, "SmallPlatform.png", 3, true, 200, 900));
+        //gamePlatforms.add(new GamePlatform(2150, 350, 300, 30, "SmallPlatform.png", 3, true, 200, 900));
 
-        GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "SlimeAni3.png");
+        GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "CashSack.png");
         gameNPCs.add(npc1);
 
         float w = Gdx.graphics.getWidth();
@@ -93,32 +120,38 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         //Flytt spiller og plattformer:
 
-        for (GameItem gameItem: gamePlatforms) {
-            gameItem.update();
-        }
+        //for (GameItem gameItem: gamePlatforms) {
+        //    gameItem.update();
+        //}
         player1.update(gamePlatforms);
 
-        for(GameNPC gameNPC: gameNPCs){
-            gameNPC.update();
-        }
+        //for(GameNPC gameNPC: gameNPCs){
+        //    gameNPC.update();
+        //}
 
         //Render:
         batch.begin();
         backGround.draw(batch);
 
 
-        man.render(batch);
-        swirl.render(batch);
-        swirl2.render(batch);
+        //man.render(batch);
+        //swirl.render(batch);
+
         boom.render(batch);
         //ufo.render(batch);
         player1.render(batch);
+        swirl2.render(batch);
+        for(GameMap GameMap: Ambient){
+            GameMap.render(batch);
+        }
+
+
         for(GameNPC gameNPC: gameNPCs){
             gameNPC.render(batch);
         }
-        for (GameItem gameItem: gamePlatforms) {
-           batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
-        }
+        //for (GameItem gameItem: gamePlatforms) {
+        //   batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
+        //}
         batch.end();
 
     }
