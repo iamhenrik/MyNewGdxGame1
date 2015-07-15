@@ -25,9 +25,8 @@ public class GamePlayer2 extends GameItem {
 
     private static final int FRAME_COLS = 8;
     private static final int FRAME_ROWS = 4;
-    public float yVel = 35;
-    public int b = 1;
-    public float gravity = 0.5f;
+    private float yVel = 35;
+    private float gravity = 1.25f;
     private Animation walkAnimation;
     private Texture walkSheet;
     private TextureRegion[] walkFrames;
