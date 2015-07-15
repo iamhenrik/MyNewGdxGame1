@@ -17,7 +17,7 @@ public class GamePlayer2 extends GameItem {
     private boolean isJumping = false;
     private final int stepValue = 12;
 
-    private float angle = 0;
+    private float angle = 10;
     private int groundLevel = MainGameClass.GROUND_LEVEL;
 
     private boolean onPlatform = false;
@@ -25,6 +25,9 @@ public class GamePlayer2 extends GameItem {
 
     private static final int FRAME_COLS = 8;
     private static final int FRAME_ROWS = 4;
+    public float yVel = 35;
+    public int b = 1;
+    public float gravity = 0.5f;
     private Animation walkAnimation;
     private Texture walkSheet;
     private TextureRegion[] walkFrames;
@@ -68,10 +71,18 @@ public class GamePlayer2 extends GameItem {
     @Override
     public void update(List<GameItem> gameItems) {
         //Sjekker hopping, y-verdi settes her:
-        if (isJumping && angle < Math.PI) {
-            this.y = groundLevel + (int)((310f) * Math.sin(angle));
-            angle += (8)*(Math.PI/180f);
+        if (isJumping) {
+
+            yVel -= gravity;
+            this.y += yVel;
+
             onPlatform = false;
+
+            if(this.y <= groundLevel){
+                this.y = groundLevel;
+                isJumping = false;
+                yVel = 35f;
+                }
         } else {
             this.y = groundLevel;
             angle = 0;

@@ -80,13 +80,14 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         Ambient.add(tile11);
 
 
-        player1 = new GamePlayer2(750, 900, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAni3.png");
-        GamePlatform platform1 = new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false, 0, 0);
-        gamePlatforms.add(platform1);
-        GamePlatform platform2 = new GamePlatform(700, 440, 300, 30, "SmallPlatform.png", 4, true, 600, 100);
-        gamePlatforms.add(platform2);
-        GamePlatform platform3 = new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 1, false, 0, 0);
-        gamePlatforms.add(platform3);
+        player1 = new GamePlayer2(GROUND_LEVEL, 300, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAni3.png");
+
+        //GamePlatform platform1 = new GamePlatform(2350, 1200, 300, 30, "SmallPlatform.png", 0, false, 0, 0);
+        //gamePlatforms.add(platform1);
+        //GamePlatform platform2 = new GamePlatform(700, 440, 300, 30, "SmallPlatform.png", 4, true, 600, 100);
+        //gamePlatforms.add(platform2);
+        //GamePlatform platform3 = new GamePlatform(1000, 1100, 300, 30, "SmallPlatform.png", 1, false, 0, 0);
+        //gamePlatforms.add(platform3);
 
         //gamePlatforms.add(new GamePlatform(900, 350, 300, 30, "SmallPlatform.png", 3, true, 600, 300));
         //gamePlatforms.add(new GamePlatform(1100, 350, 140, 30, "SmallPlatform.png", 4, true, 600, 400));
@@ -96,8 +97,8 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         //gamePlatforms.add(new GamePlatform(1900, 350, 140, 30, "SmallPlatform.png", 4, true, 400, 700));
         //gamePlatforms.add(new GamePlatform(2150, 350, 300, 30, "SmallPlatform.png", 3, true, 200, 900));
 
-        GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "CashSack.png");
-        gameNPCs.add(npc1);
+        //GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "CashSack.png");
+        //gameNPCs.add(npc1);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();

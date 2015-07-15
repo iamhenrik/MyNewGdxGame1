@@ -20,7 +20,7 @@ public class GamePlayer extends GameItem {
         sprite = new Sprite(new Texture(Gdx.files.internal(path)));
     }
 
-    private float angle = 10;
+    private float angle = 2;
     private int groundLevel = MainGameClass.GROUND_LEVEL;
 
     private boolean onPlatform = false;
@@ -46,11 +46,12 @@ public class GamePlayer extends GameItem {
         if (isJumping && angle < Math.PI) {
 
             this.y = groundLevel + angle;
-
+            angle -= 0.1f;
+            if(angle>=100){
+                angle += 0.1f;
+            }
                     //(int)((270f) * Math.sin(angle));
-
-            angle += (8)*(Math.PI/180f);
-
+                    //angle += (8)*(Math.PI/180f);
             onPlatform = false;
         } else {
             this.y = groundLevel;
