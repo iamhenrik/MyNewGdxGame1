@@ -69,16 +69,16 @@ public class GamePlayer extends GameItem {
             }
         }
 
-        //Dersom ikke på platform, sjekk alle platformer:
+        //Dersom ikke paa platform, sjekk alle platformer:
         if (this.onPlatform == false) {
             //Utenfor, faller evt. ned:
             if(groundLevel >= MainGameClass.GROUND_LEVEL){
                 groundLevel -= 8;
             }
-            //Sjekker seg selv mot alle plattformer. Dersom på en platform sjekkes ikke resten...
+            //Sjekker seg selv mot alle plattformer. Dersom paa en platform sjekkes ikke resten...
             for (int i = 0; i < gameItems.size(); i++) {
                 GamePlatform pf = (GamePlatform) gameItems.get(i);
-                //På platformen:
+                //Paa platformen:
                 if (this.on(pf)) {
                     this.onPlatform = true;
                     this.currentPlatform = pf;
@@ -97,7 +97,7 @@ public class GamePlayer extends GameItem {
                 this.x -= pf.getSpeed();
         }else {
             if (pf.isMoveUp())
-                groundLevel+= pf.getSpeed();    //NB! justerer på groundLevel!!
+                groundLevel+= pf.getSpeed();    //NB! justerer paa groundLevel!!
             else
                 groundLevel-= pf.getSpeed();
         }
