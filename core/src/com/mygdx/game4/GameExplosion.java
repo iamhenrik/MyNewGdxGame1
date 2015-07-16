@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import java.sql.Time;
-import java.time.Clock;
 import java.util.Timer;
 import java.util.TimerTask;
 

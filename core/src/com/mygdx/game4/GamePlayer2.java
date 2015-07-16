@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GamePlayer2 extends GameItem {
 
-    public final static int PLAYER_SIZE = 0;
+    public final static int PLAYER_SIZE = 180;
     private boolean isJumping = false;
     private final int stepValue = 12;
 
@@ -62,7 +62,7 @@ public class GamePlayer2 extends GameItem {
 
         currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 
-        spriteBatch.draw(currentFrame, this.x-180, this.y-50);
+        spriteBatch.draw(currentFrame, this.x, this.y-25);
         //spriteBatch.draw(currentFrame, this.x, this.y);
 
 
@@ -85,7 +85,10 @@ public class GamePlayer2 extends GameItem {
                 yVel = 25f;
                 }
         } else {
-            this.y = groundLevel;
+            this.y -= 13;
+            if(this.y <= groundLevel) {
+                this.y = groundLevel;
+            }
             angle = 0;
             isJumping = false;
         }
@@ -139,12 +142,26 @@ public class GamePlayer2 extends GameItem {
         return false;
     }
     private boolean on(GamePlatform platform) {
-        return (((this.x + this.getWidth()/2f) >= (platform.x)) &&
-                ((this.x + this.getWidth()/2f <= platform.x + platform.getWidth())) &&
-                ((this.y >= platform.y)));
+        float pX1 = platform.x;                 //p = platform
+        float pX2 = pX1+platform.getWidth();
+        float bX1 = (this.x);                //b = blob
+        float bX2 = (this.x+PLAYER_SIZE);
+        //return (((this.x + this.getWidth()) >= (platform.x)) &&
+          //      ((this.x + this.getWidth() <= platform.x + platform.getWidth())) &&
+            //    ((this.y >= platform.y)));
         //return (sjekkRight(platform) == true &&
           //      sjekkLeft(platform) == true &&
             //    ((this.y >= platform.y)));
+       //return(((bX1 >= pX1) && (bX1 <= pX2) && (this.y >= platform.y))
+       //         ||
+       //         ((bX2 >= pX1)&&(bX2 <= pX2) && (this.y >= platform.y)));
+
+
+        boolean insideLeft = (pX1 >= bX1+50 && pX1 <= bX2-50);
+        boolean insideRight = (pX2 >= bX1+50 && pX2 <= bX2-50);
+        boolean onY = this.y >= platform.y;
+
+        return (insideLeft || insideRight) && onY;
     }
 
 
@@ -184,8 +201,8 @@ public class GamePlayer2 extends GameItem {
             if (this.x < 1500) {
                 camera.translate(-MainGameClass.CAMERA_PAN_SPEED, 0, 0);
             }
-            if (this.x - 100 <= 0) {
-                this.x = 0 + 100;
+            if (this.x+25 <= 0) {
+                this.x = 0-25;
             }
         }
 
@@ -194,8 +211,8 @@ public class GamePlayer2 extends GameItem {
             if (this.x > 500) {
                 camera.translate(MainGameClass.CAMERA_PAN_SPEED, 0, 0);
             }
-            if ((this.x + 100) >= MainGameClass.WORLD_WIDTH) {
-                this.x = (MainGameClass.WORLD_WIDTH - 100);
+            if ((this.x-25 + PLAYER_SIZE) >= MainGameClass.WORLD_WIDTH) {
+                this.x = (MainGameClass.WORLD_WIDTH - PLAYER_SIZE+30);
             }
         }
 

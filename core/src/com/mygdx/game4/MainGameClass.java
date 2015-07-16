@@ -75,12 +75,12 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         GameMap bigTree = new GameMap(2300, 79, 388,685,"BigTree.png");
         Ambient.add(bigTree);
 
-        player1 = new GamePlayer2(GROUND_LEVEL, 300, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAni3.png");
+        player1 = new GamePlayer2(GROUND_LEVEL, 300, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
         gamePlatforms.add(new GamePlatform(2400, 370, 81,63,"SnowPlatformSmall.png", 2, true, 900, 300));
-        gamePlatforms.add(new GamePlatform(300, 800, 81,63,"SnowPlatformSmall.png", 2, true, 600, 600));
-        gamePlatforms.add(new GamePlatform(2300, 1130, 340, 126, "SnowPlatformBig.png",0,false,0,0));
+        gamePlatforms.add(new GamePlatform(140, 800, 81,63,"SnowPlatformSmall.png", 2, true, 600, 600));
+        gamePlatforms.add(new GamePlatform(2300, 1030, 340, 126, "SnowPlatformBig.png",0,false,0,0));
         gamePlatforms.add(new GamePlatform(250, 150, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
-        gamePlatforms.add(new GamePlatform(2330, 1050, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
+        //gamePlatforms.add(new GamePlatform(2330, 1050, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
         for(int i =0; i<5; i++){
             xValuePlatforms += 400;
             gamePlatforms.add(new GamePlatform(xValuePlatforms+200, 330, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
