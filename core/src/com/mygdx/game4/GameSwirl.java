@@ -15,8 +15,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GameSwirl extends GameItem {
 
-    private static final int FRAME_COLS = 20;
-    private static final int FRAME_ROWS = 25;
+    private static final int FRAME_COLS = 1;
+    private static final int FRAME_ROWS = 1;
     private Animation walkAnimation;
     private Texture walkSheet;
     private TextureRegion[] walkFrames;
@@ -31,6 +31,7 @@ public class GameSwirl extends GameItem {
         this.x = x;
         this.y = y;
         this.path = path;
+
         walkSheet = new Texture(Gdx.files.internal(path));
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, (walkSheet.getWidth() / FRAME_COLS), (walkSheet.getHeight() / FRAME_ROWS));

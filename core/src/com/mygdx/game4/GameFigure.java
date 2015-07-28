@@ -108,6 +108,15 @@ public class GameFigure extends GameItem {
         //spriteBatch.end();
     }
 
+    @Override
+    public float getX() {
+        return x;
+    }
+    @Override
+    public float getY(){
+        return y;
+    }
+
     public void KeyInput() {
 
         if (Gdx.input.isKeyPressed(Input.Keys.Z)) {

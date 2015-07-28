@@ -5,10 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -48,9 +50,9 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     private int xValueTiles = -270;
     private int xValuePlatforms = 0;
 
-    private World world;
-    private Body player;
-    private Box2DDebugRenderer b2dr;
+    private BitmapFont font;
+    private Vector3 touch;
+    private GameFigure One;
 
 
 
@@ -66,8 +68,14 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         backGround.setPosition(0, 0);
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
+        font = new BitmapFont(Gdx.files.internal("fonts/blackOakFont.fnt"), false);
+
+        touch = new Vector3();
+
+        One = new GameFigure(700,500, 76,126, "numberOne.png");
+
         man = new GameFigure();
-        swirl = new GameSwirl(2350, GROUND_LEVEL, "AlisharAni20Frames3.png");
+        swirl = new GameSwirl(2350, GROUND_LEVEL, "numberOne.png");
         swirl2 = new GameSwirl(1500, GROUND_LEVEL+10, "amy_sprite.png");
         boom = new GameExplosion(2000, 400);
         ufo = new GameAnimations(2350, 1170);
@@ -89,7 +97,8 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         Ambient.add(bigTree);
 
         player1 = new GamePlayer2(GROUND_LEVEL, 300, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
-        gamePlatforms.add(new GamePlatform(2400, 370, 81,63,"SnowPlatformSmall.png", 2, true, 900, 300));
+
+        /*gamePlatforms.add(new GamePlatform(2400, 370, 81,63,"SnowPlatformSmall.png", 2, true, 900, 300));
         gamePlatforms.add(new GamePlatform(140, 800, 81,63,"SnowPlatformSmall.png", 2, true, 600, 600));
         gamePlatforms.add(new GamePlatform(2300, 1030, 340, 126, "SnowPlatformBig.png",0,false,0,0));
         gamePlatforms.add(new GamePlatform(250, 150, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
@@ -101,6 +110,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
             gamePlatforms.add(new GamePlatform(xValuePlatforms+200, 920, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
             System.out.println("lol " + xValuePlatforms);
         }
+           */
 
         //GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "CashSack.png");
         //gameNPCs.add(npc1);
@@ -118,34 +128,51 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     @Override
     public void render() {
+
         handleInput();
+
         //Kamera:
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        for (GameItem gameItem: gamePlatforms) {
-            gameItem.update();
-        }
+        //for (GameItem gameItem: gamePlatforms) {
+        //    gameItem.update();
+        //}
         player1.update(gamePlatforms);
 
         //Render:
         batch.begin();
         backGround.draw(batch);
-        boom.render(batch);
         for(GameMap GameMap: Ambient){
             GameMap.render(batch);
         }
-        for(GameNPC gameNPC: gameNPCs){
-            gameNPC.render(batch);
-        }
-        swirl2.render(batch);
         player1.render(batch);
-        for (GameItem gameItem: gamePlatforms) {
-           batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
-        }
+        //for (GameItem gameItem: gamePlatforms) {
+        //  batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
+        //}
+        font.draw(batch, "HELLO WHAT IS GOING ON", 1300, 600);
+        swirl.render(batch);
         batch.end();
+        //generalUpdate(touch);
 
+
+    }
+    private void generalUpdate(Vector3 touch){
+        if(Gdx.input.justTouched()){
+            touch.set(Gdx.input.getX(),Gdx.input.getY(),0);
+            System.out.println(touch.x + " + " + touch.y);
+            System.out.println(swirl.getPosition(new Vector2()));
+            System.out.println(player1.getPosition(new Vector2()));
+
+            if(touch.x >= player1.getX() && touch.x <= (player1.getY()+ player1.getX()+76)
+                    //&& touch.y >= player1.y && touch.y <= (player1.y+player1.getHeight())
+                    ){
+
+               // System.out.println("BUTTON PRESSED");
+               // System.out.println(touch.x  + " + " + touch.y);
+            }
+        }
 
     }
 
@@ -171,8 +198,10 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     }
 
     @Override
-    public boolean tap(float x, float y, int count, int button) {
-        // TODO Auto-generated method stub
+    public boolean tap(float x, float y, int count, int button){
+        if(x >= player1.getX() && x <= (player1.getY()+ player1.getX()+76)){
+            System.out.println("TEST");
+        }
         return false;
     }
 
@@ -184,7 +213,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
-        // TODO Auto-generated method stub
+
         return false;
     }
 
