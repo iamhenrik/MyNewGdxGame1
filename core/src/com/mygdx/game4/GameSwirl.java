@@ -15,8 +15,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class GameSwirl extends GameItem {
 
-    private static final int FRAME_COLS = 4;
-    private static final int FRAME_ROWS = 1;
+    private static final int FRAME_COLS = 20;
+    private static final int FRAME_ROWS = 25;
     private Animation walkAnimation;
     private Texture walkSheet;
     private TextureRegion[] walkFrames;
@@ -35,18 +35,18 @@ public class GameSwirl extends GameItem {
 
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, (walkSheet.getWidth() / FRAME_COLS), (walkSheet.getHeight() / FRAME_ROWS));
 
-        walkFrames = new TextureRegion[(FRAME_COLS * FRAME_ROWS - 0)];
+        walkFrames = new TextureRegion[(FRAME_COLS * FRAME_ROWS)];
 
 
         int index = 0;
         for (int i = 0; i < FRAME_ROWS; i++) {
             for (int j = 0; j < FRAME_COLS; j++) {
-                //if (index<14) {
+                //if (index<60) {
                     walkFrames[index++] = tmp[i][j];
                 //}
             }
         }
-        walkAnimation = new Animation(0.1f, walkFrames);
+        walkAnimation = new Animation(0.035f, walkFrames);
         //spriteBatch = new SpriteBatch();
 
         stateTime = 0f;

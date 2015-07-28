@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +36,8 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     private ArrayList<GameMap> Ambient;
 
     //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
+    //public static final int WORLD_WIDTH = 2700; //1340;
+    //public static final int WORLD_HEIGHT = 1500; //975;
     public static final int WORLD_WIDTH = 2700; //1340;
     public static final int WORLD_HEIGHT = 1500; //975;
 
@@ -41,9 +48,15 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     private int xValueTiles = -270;
     private int xValuePlatforms = 0;
 
+    private World world;
+    private Body player;
+    private Box2DDebugRenderer b2dr;
+
+
 
     @Override
     public void create() {
+
         Ambient = new ArrayList<GameMap>();
         gamePlatforms = new ArrayList<GameItem>();
         gameNPCs = new ArrayList<GameNPC>();
@@ -55,7 +68,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         man = new GameFigure();
         swirl = new GameSwirl(2350, GROUND_LEVEL, "AlisharAni20Frames3.png");
-        swirl2 = new GameSwirl(2450, GROUND_LEVEL, "CashSack.png");
+        swirl2 = new GameSwirl(1500, GROUND_LEVEL+10, "amy_sprite.png");
         boom = new GameExplosion(2000, 400);
         ufo = new GameAnimations(2350, 1170);
 
@@ -111,61 +124,44 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //Flytt spiller og plattformer:
-
         for (GameItem gameItem: gamePlatforms) {
             gameItem.update();
         }
         player1.update(gamePlatforms);
 
-        //for(GameNPC gameNPC: gameNPCs){
-        //    gameNPC.update();
-        //}
-
         //Render:
         batch.begin();
         backGround.draw(batch);
-
-
-        //man.render(batch);
-        //swirl.render(batch);
-
         boom.render(batch);
-        //ufo.render(batch);
-
-        swirl2.render(batch);
         for(GameMap GameMap: Ambient){
             GameMap.render(batch);
         }
-
-
         for(GameNPC gameNPC: gameNPCs){
             gameNPC.render(batch);
         }
+        swirl2.render(batch);
         player1.render(batch);
         for (GameItem gameItem: gamePlatforms) {
            batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
         }
         batch.end();
 
+
     }
-
-    /*public void jumpspeed() {
-        if (isJumpingUp && player1.y < MAX_JUMP_HEIGHT) {
-
-        }
-    }*/
 
     private void handleInput() {
         player1.handleInput(camera);
 
     }
+    @Override
+    public void dispose(){
+    }
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = 300f;
-        camera.viewportHeight = 300f * height / width;
-        camera.update();
+       // camera.viewportWidth = 300f;
+       // camera.viewportHeight = 300f * height / width;
+       // camera.update();
     }
 
     @Override

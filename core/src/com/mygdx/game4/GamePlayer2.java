@@ -85,7 +85,7 @@ public class GamePlayer2 extends GameItem {
                 yVel = 25f;
                 }
         } else {
-            this.y -= 13;
+            this.y -= 17;
             if(this.y <= groundLevel) {
                 this.y = groundLevel;
             }
@@ -107,7 +107,7 @@ public class GamePlayer2 extends GameItem {
         if (this.onPlatform == false) {
             //Utenfor, faller evt. ned:
             if(groundLevel >= MainGameClass.GROUND_LEVEL){
-                groundLevel -= 8;
+                groundLevel -= 17;
             }
             //Sjekker seg selv mot alle plattformer. Dersom paa en platform sjekkes ikke resten...
             for (int i = 0; i < gameItems.size(); i++) {
