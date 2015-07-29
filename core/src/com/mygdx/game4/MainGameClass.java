@@ -11,14 +11,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MainGameClass extends ApplicationAdapter implements GestureDetector.GestureListener {
     SpriteBatch batch;
@@ -27,42 +23,36 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     private List<GameItem> gamePlatforms;
 
     private OrthographicCamera camera;
-    private float rotationSpeed;
     private Sprite backGround;
-    private GameFigure man;
-    private GameSwirl swirl;
-    private GameSwirl swirl2;
-    private GameExplosion boom;
-    private GameAnimations ufo;
-    private ArrayList<GameNPC> gameNPCs;
-    private ArrayList<GameMap> Ambient;
+    private GameButton startButton;
+    private GameButton playAgainButton;
 
-    //	private static final int WORLD_HEIGHT = (int)(100f*(1080f/1920));
-    //public static final int WORLD_WIDTH = 2700; //1340;
-    //public static final int WORLD_HEIGHT = 1500; //975;
-    public static final int WORLD_WIDTH = 2700; //1340;
-    public static final int WORLD_HEIGHT = 1500; //975;
+    private ArrayList<GameMap> Ambient;
+    private ArrayList<GameInteger> gameIntgers;
+
+    public static final int WORLD_WIDTH = 1024; //1340;
+    public static final int WORLD_HEIGHT = 720; //975;
 
     public final static int GRAVITY = 10;
     public final static float CAMERA_PAN_SPEED = 18;
     public static final int GROUND_LEVEL = 79;
 
     private int xValueTiles = -270;
-    private int xValuePlatforms = 0;
+    private int xValueNumbers = 0;
+
+    private int tapCounter = 0;
+    private int randomNumber;
 
     private BitmapFont font;
-    private Vector3 touch;
-    private GameFigure One;
 
-
+    private int playerNumber = 0;
 
     @Override
     public void create() {
 
         Ambient = new ArrayList<GameMap>();
         gamePlatforms = new ArrayList<GameItem>();
-        gameNPCs = new ArrayList<GameNPC>();
-        rotationSpeed = 0.5f;
+
         batch = new SpriteBatch();
         backGround = new Sprite(new Texture("MapleBackGroundPng.png"));
         backGround.setPosition(0, 0);
@@ -70,50 +60,31 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         font = new BitmapFont(Gdx.files.internal("fonts/blackOakFont.fnt"), false);
 
-        touch = new Vector3();
+        startButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2+75,150,150,"startGame.png", true);
+        playAgainButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2-75,150,150,"playAgain.png", false);
 
-        One = new GameFigure(700,500, 76,126, "numberOne.png");
+        gameIntgers = new ArrayList<GameInteger>();
 
-        man = new GameFigure();
-        swirl = new GameSwirl(2350, GROUND_LEVEL, "numberOne.png");
-        swirl2 = new GameSwirl(1500, GROUND_LEVEL+10, "amy_sprite.png");
-        boom = new GameExplosion(2000, 400);
-        ufo = new GameAnimations(2350, 1170);
+        for(int i=1; i<=10; i++){
+            gameIntgers.add(new GameInteger(this, xValueNumbers,GROUND_LEVEL,90,130,"integer"+i+".png", i));
+            xValueNumbers += 101;
+        }
 
-        for(int i = 0; i<10; i++){
+        for(int i = 0; i<8; i++){
             xValueTiles +=270;
            Ambient.add(new GameMap(xValueTiles,0,270,79,"TileWithGround.png"));
         }
 
-        GameMap cloud1 = new GameMap(200, 1100, 810,317, "CloudOne.png");
+        GameMap cloud1 = new GameMap(50, 700, 810,317, "CloudOne.png");
         Ambient.add(cloud1);
-        GameMap cloud2 = new GameMap(1200, 980, 605,224,"CloudTwo.png");
+        GameMap cloud2 = new GameMap(800, 780, 605,224,"CloudTwo.png");
         Ambient.add(cloud2);
-        GameMap cloud3 = new GameMap(2000, 890, 688,579,"CloudThree.png");
+        GameMap cloud3 = new GameMap(1300, 490, 688,579,"CloudThree.png");
         Ambient.add(cloud3);
-        GameMap building1 = new GameMap(400, 79, 810,325,"BuildingsOne.png");
-        Ambient.add(building1);
-        GameMap bigTree = new GameMap(2300, 79, 388,685,"BigTree.png");
+        GameMap bigTree = new GameMap(1600, 79, 388,685,"BigTree.png");
         Ambient.add(bigTree);
 
         player1 = new GamePlayer2(GROUND_LEVEL, 300, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
-
-        /*gamePlatforms.add(new GamePlatform(2400, 370, 81,63,"SnowPlatformSmall.png", 2, true, 900, 300));
-        gamePlatforms.add(new GamePlatform(140, 800, 81,63,"SnowPlatformSmall.png", 2, true, 600, 600));
-        gamePlatforms.add(new GamePlatform(2300, 1030, 340, 126, "SnowPlatformBig.png",0,false,0,0));
-        gamePlatforms.add(new GamePlatform(250, 150, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
-        //gamePlatforms.add(new GamePlatform(2330, 1050, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
-        for(int i =0; i<5; i++){
-            xValuePlatforms += 400;
-            gamePlatforms.add(new GamePlatform(xValuePlatforms+200, 330, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
-            gamePlatforms.add(new GamePlatform(xValuePlatforms, 620, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
-            gamePlatforms.add(new GamePlatform(xValuePlatforms+200, 920, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
-            System.out.println("lol " + xValuePlatforms);
-        }
-           */
-
-        //GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "CashSack.png");
-        //gameNPCs.add(npc1);
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -124,6 +95,8 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         camera.update();
         Gdx.input.setInputProcessor(new GestureDetector(this));   //sdfdf
+
+
     }
 
     @Override
@@ -136,44 +109,112 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //for (GameItem gameItem: gamePlatforms) {
-        //    gameItem.update();
-        //}
         player1.update(gamePlatforms);
-
         //Render:
         batch.begin();
         backGround.draw(batch);
-        for(GameMap GameMap: Ambient){
-            GameMap.render(batch);
+        for(GameMap gameMap: Ambient){
+            gameMap.render(batch);
         }
-        player1.render(batch);
-        //for (GameItem gameItem: gamePlatforms) {
-        //  batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
-        //}
-        font.draw(batch, "HELLO WHAT IS GOING ON", 1300, 600);
-        swirl.render(batch);
+        //player1.render(batch);
+
+        for(GameInteger gameInteger: gameIntgers){
+            gameInteger.render(batch);
+        }
+        startButton.render(batch);
+        playAgainButton.render(batch);
+        gameCheck(batch);
+        font.draw(batch, String.valueOf(randomNumber), 400, 320);
         batch.end();
-        //generalUpdate(touch);
-
-
     }
-    private void generalUpdate(Vector3 touch){
-        if(Gdx.input.justTouched()){
-            touch.set(Gdx.input.getX(),Gdx.input.getY(),0);
-            System.out.println(touch.x + " + " + touch.y);
-            System.out.println(swirl.getPosition(new Vector2()));
-            System.out.println(player1.getPosition(new Vector2()));
+    public void gameCheck(SpriteBatch batch){
+        if(tapCounter==2){
+            ArrayList<GameInteger> selectedNumbers = new ArrayList<GameInteger>();
+            for(GameInteger gameInteger: gameIntgers){
+                gameInteger.render(batch);
+                if(gameInteger.isSelected()){
+                    selectedNumbers.add(gameInteger);
+                }
+            }
+            for(int i=0; i<selectedNumbers.size(); i++){
+                font.draw(batch,String.valueOf((selectedNumbers.get(i)).getNumber()),selectedNumbers.get(i).getX(),500);
+            }
+            check(selectedNumbers.get(0).getNumber(),selectedNumbers.get(1).getNumber());
+        }
+    }
 
-            if(touch.x >= player1.getX() && touch.x <= (player1.getY()+ player1.getX()+76)
-                    //&& touch.y >= player1.y && touch.y <= (player1.y+player1.getHeight())
-                    ){
+    public void randTall(){
+        Random random = new Random();
+        randomNumber = random.nextInt(10)+1;
+    }
 
-               // System.out.println("BUTTON PRESSED");
-               // System.out.println(touch.x  + " + " + touch.y);
+    public void check(int redGuess, int blueGuess){
+
+        if(blueGuess == randomNumber && redGuess == randomNumber){
+            //showMessageDialog(null,"Dere gjettet likt, dirkk pls");
+        }
+        if(blueGuess == randomNumber){
+            //showMessageDialog(null,"Blå vant");
+        }
+        if(redGuess == randomNumber){
+            //showMessageDialog(null,"Rød vant");
+            font.draw(batch,"Rød vant!",400,400);
+        }
+        if(redGuess>randomNumber  && blueGuess > randomNumber){
+            if(redGuess>blueGuess){
+                //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) +" unna.");
+            }
+            if(blueGuess>redGuess){
+                //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) +" unna.");
             }
         }
+        if(redGuess<randomNumber && blueGuess<randomNumber){
+            if(redGuess>blueGuess){
+                //showMessageDialog(null,"Rød vant, Blå var: " + (randomNumber-blueGuess) +" unna.");
+            }
+            if(blueGuess>redGuess){
+                //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber-redGuess) +" unna.");
+            }
+        }
+        if(redGuess < randomNumber && blueGuess > randomNumber){
+            if((blueGuess-randomNumber) == (randomNumber-redGuess)){
+                //showMessageDialog(null,"Dere var begge like langt ifra, drikk: " + (blueGuess-randomNumber) + " slurker hver");
+            }
+            if((blueGuess-randomNumber) > (randomNumber-redGuess)){
+                //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) + " unna");
+            }
+            else{
+                //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber - redGuess) + " unna");
+            }
+        }
+        if(blueGuess < randomNumber && redGuess > randomNumber){
+            if((redGuess-randomNumber)==(randomNumber-blueGuess)){
+                //showMessageDialog(null,"Dere var begge like langt ifra, drikk: " + (redGuess-randomNumber) + " slurker hver");
+            }
+            if((redGuess-randomNumber)>(randomNumber-blueGuess)){
+                //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) + " unna");
+            }
+            else{
+                //showMessageDialog(null,"Rød vant, Blå var: " +(randomNumber - blueGuess) + " unna");
+            }
+        }
+        resetGame();
+    }
+    private void resetGame(){
+        tapCounter = 0;
+        startButton.setClicked(false);
+        for(GameInteger gameInteger: gameIntgers){
+            gameInteger.setActivated(false);
+            gameInteger.setSelected(false);
+        }
+        randomNumber = -1;
+        startButton.setVisibleButton(true);
+        playAgainButton.setVisibleButton(true);
 
+    }
+
+    public void incrementTapCounter(){
+        tapCounter++;
     }
 
     private void handleInput() {
@@ -199,8 +240,26 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     @Override
     public boolean tap(float x, float y, int count, int button){
-        if(x >= player1.getX() && x <= (player1.getY()+ player1.getX()+76)){
-            System.out.println("TEST");
+        if(tapCounter<2) {
+            for (GameInteger gameInteger : gameIntgers) {
+                gameInteger.tap(x, y, count, button);
+            }
+            startButton.tap(x, y, count, button);
+            if (startButton.isClicked()) {
+                startButton.setVisibleButton(false);
+                for (GameInteger gameInteger : gameIntgers) {
+                    gameInteger.setActivated(true);
+                }
+            }
+        }
+        if(tapCounter==2 && playAgainButton.isClicked()){
+            randTall();
+            playAgainButton.setVisibleButton(true);
+            playAgainButton.setClicked(false);
+            playAgainButton.tap(x, y, count,button);
+            if(playAgainButton.isClicked()){
+                resetGame();
+            }
         }
         return false;
     }
