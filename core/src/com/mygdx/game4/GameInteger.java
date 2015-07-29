@@ -108,7 +108,9 @@ public class GameInteger extends GameItem {
 
                 this.setSelected(true);
                 Gdx.app.log("mygame", "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+                this.parent.addToSelectedNumbers(this);
                 this.parent.incrementTapCounter();
+
                 //playerNumber++;
                 //this.setPlayerNumber(playerNumber);
             }

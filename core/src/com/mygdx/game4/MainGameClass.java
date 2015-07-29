@@ -1,6 +1,7 @@
 package com.mygdx.game4;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -70,6 +71,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         playAgainButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2-75,150,150,"playAgain.png");
 
         gameIntgers = new ArrayList<GameInteger>();
+        selectedNumbers = new ArrayList<GameInteger>();
 
         for(int i=1; i<=10; i++){
             gameIntgers.add(new GameInteger(this, xValueNumbers,GROUND_LEVEL,90,130,"integer"+i+".png", i));
@@ -135,7 +137,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
                 break;
 
             case GAME_RESULT:
-                font.draw(batch,resultMessage, 400, 450);
+                font.draw(batch,resultMessage, 5, 450);
                 playAgainButton.render(batch);
                 break;
         }
@@ -144,20 +146,18 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         batch.end();
     }
+    public void addToSelectedNumbers(GameInteger gameInteger){
+        selectedNumbers.add(gameInteger);
+    }
 
     public void setGameResult(){
-        selectedNumbers = new ArrayList<GameInteger>();
-        for(GameInteger gameInteger: gameIntgers){
-            if(gameInteger.isSelected()){
-                selectedNumbers.add(gameInteger);
-            }
-        }
         /*
         for(int i=0; i<selectedNumbers.size(); i++){
             font.draw(batch,String.valueOf((selectedNumbers.get(i)).getNumber()),selectedNumbers.get(i).getX(),500);
         }
         */
         check(selectedNumbers.get(0).getNumber(),selectedNumbers.get(1).getNumber());
+        System.out.println(selectedNumbers.get(0).getNumber() + ", "+selectedNumbers.get(1).getNumber());
     }
 
     public void randTall(){
@@ -166,54 +166,57 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     }
 
     public void check(int redGuess, int blueGuess){
-
-        if(blueGuess == randomNumber && redGuess == randomNumber){
-            //showMessageDialog(null,"Dere gjettet likt, dirkk pls");
-        }
-        if(blueGuess == randomNumber){
-            resultMessage = "Blå vant";
-        }
         if(redGuess == randomNumber){
-            //showMessageDialog(null,"Rød vant");
-            //font.draw(batch,"Rød vant!",400,400);
-            resultMessage = "Rød vant!";
+            resultMessage = "Red Wins";
+        }else{
+            resultMessage = "Blue Wins";
         }
         if(redGuess>randomNumber  && blueGuess > randomNumber){
             if(redGuess>blueGuess){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) +" unna.");
+                resultMessage = "1Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" sips";
             }
             if(blueGuess>redGuess){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) +" unna.");
+                resultMessage = "2Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" sips";
             }
         }
         if(redGuess<randomNumber && blueGuess<randomNumber){
             if(redGuess>blueGuess){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (randomNumber-blueGuess) +" unna.");
+                resultMessage = "3Red WON, Blue Looses, Drink "  + (randomNumber-blueGuess) +" sips";
             }
             if(blueGuess>redGuess){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber-redGuess) +" unna.");
+                resultMessage = "4Blue WON, Red Looses, Drink "  + (randomNumber-redGuess) +" sips";
             }
         }
         if(redGuess < randomNumber && blueGuess > randomNumber){
             if((blueGuess-randomNumber) == (randomNumber-redGuess)){
                 //showMessageDialog(null,"Dere var begge like langt ifra, drikk: " + (blueGuess-randomNumber) + " slurker hver");
+                resultMessage = "You were both " +(blueGuess-randomNumber) +", Drink "  + (blueGuess-randomNumber) +" sips";
             }
             if((blueGuess-randomNumber) > (randomNumber-redGuess)){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) + " unna");
+                resultMessage = "5Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" sips";
             }
             else{
                 //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber - redGuess) + " unna");
+                resultMessage = "6Blue WON, Red Looses, Drink "  + (randomNumber - redGuess) +" sips";
             }
         }
         if(blueGuess < randomNumber && redGuess > randomNumber){
             if((redGuess-randomNumber)==(randomNumber-blueGuess)){
                 //showMessageDialog(null,"Dere var begge like langt ifra, drikk: " + (redGuess-randomNumber) + " slurker hver");
+                resultMessage = "You were both " +(redGuess-randomNumber) +", Drink "  + (redGuess-randomNumber) +" sips";
             }
             if((redGuess-randomNumber)>(randomNumber-blueGuess)){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) + " unna");
+                resultMessage = "7Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" sips";
             }
             else{
                 //showMessageDialog(null,"Rød vant, Blå var: " +(randomNumber - blueGuess) + " unna");
+                resultMessage = "8Red WON, Blue Looses, Drink "  + (randomNumber - blueGuess) +" sips";
             }
         }
     }
@@ -280,6 +283,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
                     randTall();
                     gameStatus = GameStatus.GAME_PLAY;
                     resultMessage = "";
+                    selectedNumbers.clear();
                 }
                 break;
         }
