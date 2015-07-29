@@ -43,9 +43,15 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     private int tapCounter = 0;
     private int randomNumber;
 
+    private ArrayList<GameInteger> selectedNumbers;
+    private String resultMessage = "";
+
     private BitmapFont font;
 
-    private int playerNumber = 0;
+    public enum GameStatus {
+        GAME_START, GAME_PLAY, GAME_RESULT, GAME_OVER
+    }
+    private GameStatus gameStatus = GameStatus.GAME_START;
 
     @Override
     public void create() {
@@ -60,8 +66,8 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         font = new BitmapFont(Gdx.files.internal("fonts/blackOakFont.fnt"), false);
 
-        startButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2+75,150,150,"startGame.png", true);
-        playAgainButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2-75,150,150,"playAgain.png", false);
+        startButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2+75,150,150,"startGame.png");
+        playAgainButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2-75,150,150,"playAgain.png");
 
         gameIntgers = new ArrayList<GameInteger>();
 
@@ -109,38 +115,49 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        player1.update(gamePlatforms);
         //Render:
         batch.begin();
         backGround.draw(batch);
         for(GameMap gameMap: Ambient){
             gameMap.render(batch);
         }
-        //player1.render(batch);
 
-        for(GameInteger gameInteger: gameIntgers){
-            gameInteger.render(batch);
+        //Tegner resten avhengig av status:
+        switch (gameStatus) {
+            case GAME_START:
+                startButton.render(batch);
+                break;
+
+            case GAME_PLAY:
+                for(GameInteger gameInteger: gameIntgers){
+                    gameInteger.render(batch);
+                }
+                break;
+
+            case GAME_RESULT:
+                font.draw(batch,resultMessage, 400, 450);
+                playAgainButton.render(batch);
+                break;
         }
-        startButton.render(batch);
-        playAgainButton.render(batch);
-        gameCheck(batch);
         font.draw(batch, String.valueOf(randomNumber), 400, 320);
+        //gameCheck(batch);
+
         batch.end();
     }
-    public void gameCheck(SpriteBatch batch){
-        if(tapCounter==2){
-            ArrayList<GameInteger> selectedNumbers = new ArrayList<GameInteger>();
-            for(GameInteger gameInteger: gameIntgers){
-                gameInteger.render(batch);
-                if(gameInteger.isSelected()){
-                    selectedNumbers.add(gameInteger);
-                }
+
+    public void setGameResult(){
+        selectedNumbers = new ArrayList<GameInteger>();
+        for(GameInteger gameInteger: gameIntgers){
+            if(gameInteger.isSelected()){
+                selectedNumbers.add(gameInteger);
             }
-            for(int i=0; i<selectedNumbers.size(); i++){
-                font.draw(batch,String.valueOf((selectedNumbers.get(i)).getNumber()),selectedNumbers.get(i).getX(),500);
-            }
-            check(selectedNumbers.get(0).getNumber(),selectedNumbers.get(1).getNumber());
         }
+        /*
+        for(int i=0; i<selectedNumbers.size(); i++){
+            font.draw(batch,String.valueOf((selectedNumbers.get(i)).getNumber()),selectedNumbers.get(i).getX(),500);
+        }
+        */
+        check(selectedNumbers.get(0).getNumber(),selectedNumbers.get(1).getNumber());
     }
 
     public void randTall(){
@@ -154,11 +171,12 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
             //showMessageDialog(null,"Dere gjettet likt, dirkk pls");
         }
         if(blueGuess == randomNumber){
-            //showMessageDialog(null,"Blå vant");
+            resultMessage = "Blå vant";
         }
         if(redGuess == randomNumber){
             //showMessageDialog(null,"Rød vant");
-            font.draw(batch,"Rød vant!",400,400);
+            //font.draw(batch,"Rød vant!",400,400);
+            resultMessage = "Rød vant!";
         }
         if(redGuess>randomNumber  && blueGuess > randomNumber){
             if(redGuess>blueGuess){
@@ -198,23 +216,14 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
                 //showMessageDialog(null,"Rød vant, Blå var: " +(randomNumber - blueGuess) + " unna");
             }
         }
-        resetGame();
-    }
-    private void resetGame(){
-        tapCounter = 0;
-        startButton.setClicked(false);
-        for(GameInteger gameInteger: gameIntgers){
-            gameInteger.setActivated(false);
-            gameInteger.setSelected(false);
-        }
-        randomNumber = -1;
-        startButton.setVisibleButton(true);
-        playAgainButton.setVisibleButton(true);
-
     }
 
     public void incrementTapCounter(){
         tapCounter++;
+        if (tapCounter==2) {
+            gameStatus = GameStatus.GAME_RESULT;
+            setGameResult();
+        }
     }
 
     private void handleInput() {
@@ -240,26 +249,39 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     @Override
     public boolean tap(float x, float y, int count, int button){
-        if(tapCounter<2) {
-            for (GameInteger gameInteger : gameIntgers) {
-                gameInteger.tap(x, y, count, button);
-            }
-            startButton.tap(x, y, count, button);
-            if (startButton.isClicked()) {
-                startButton.setVisibleButton(false);
+
+        switch (gameStatus) {
+            case GAME_START:
+                randTall();
                 for (GameInteger gameInteger : gameIntgers) {
                     gameInteger.setActivated(true);
                 }
-            }
-        }
-        if(tapCounter==2 && playAgainButton.isClicked()){
-            randTall();
-            playAgainButton.setVisibleButton(true);
-            playAgainButton.setClicked(false);
-            playAgainButton.tap(x, y, count,button);
-            if(playAgainButton.isClicked()){
-                resetGame();
-            }
+                startButton.tap(x, y, count, button);
+                if (startButton.isClicked()) {
+                    gameStatus = GameStatus.GAME_PLAY;
+                }
+                break;
+
+            case GAME_PLAY:
+                for (GameInteger gameInteger : gameIntgers) {
+                    gameInteger.tap(x, y, count, button);
+                }
+                break;
+
+            case GAME_RESULT:
+                playAgainButton.tap(x,y,count,button);
+                if (playAgainButton.isClicked()) {
+                    for (GameInteger gameInteger : gameIntgers) {
+                        gameInteger.setActivated(true);
+                        gameInteger.setSelected(false);
+                    }
+                    playAgainButton.setClicked(false);
+                    tapCounter  = 0;
+                    randTall();
+                    gameStatus = GameStatus.GAME_PLAY;
+                    resultMessage = "";
+                }
+                break;
         }
         return false;
     }

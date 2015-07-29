@@ -23,30 +23,15 @@ public class GameButton extends GameItem {
     private TextureRegion currentFrame;
     private float stateTime;
     private boolean clicked = false;
-    private boolean visibleButton;
 
     public boolean isClicked() {
         return clicked;
     }
 
-    public boolean isVisibleButton() {
-        return visibleButton;
-    }
-
-    public void setVisibleButton(boolean visibleButton) {
-        this.visibleButton = visibleButton;
-    }
-
-
-
-    public GameButton(int x, int y, int width, int height, String path,boolean visibleButton) {
+    public GameButton(int x, int y, int width, int height, String path) {
         super(x, y, width, height, path);
-        this.visibleButton = visibleButton;
         walkSheet = new Texture(Gdx.files.internal(path));
-
-
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, (walkSheet.getWidth() / FRAME_COLS), (walkSheet.getHeight() / FRAME_ROWS));
-
         walkFrames = new TextureRegion[(FRAME_COLS * FRAME_ROWS)-0];
 
         int index = 0;
@@ -67,13 +52,11 @@ public class GameButton extends GameItem {
 
     @Override
     public void render(SpriteBatch spriteBatch) {
-        if (visibleButton){
-            if (!clicked) {
-                stateTime += Gdx.graphics.getDeltaTime();
-                currentFrame = walkAnimation.getKeyFrame(stateTime, true);
-                handleInput();
-                spriteBatch.draw(currentFrame, x, y);
-            }
+        if (!clicked) {
+            stateTime += Gdx.graphics.getDeltaTime();
+            currentFrame = walkAnimation.getKeyFrame(stateTime, true);
+            handleInput();
+            spriteBatch.draw(currentFrame, x, y);
         }
     }
 

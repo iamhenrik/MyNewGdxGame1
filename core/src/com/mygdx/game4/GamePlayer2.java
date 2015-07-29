@@ -1,12 +1,15 @@
 package com.mygdx.game4;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 
 import java.util.List;
@@ -54,6 +57,9 @@ public class GamePlayer2 extends GameItem {
         walkAnimation = new Animation(0.033f, walkFrames);
 
         stateTime = 0f;
+
+        sprite.setRegionWidth(width);
+        sprite.setRegionHeight(height);
     }
 
     @Override
@@ -62,9 +68,9 @@ public class GamePlayer2 extends GameItem {
 
         currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 
-        spriteBatch.draw(currentFrame, this.x, this.y-25);
-        //spriteBatch.draw(currentFrame, this.x, this.y);
+        spriteBatch.draw(currentFrame, this.x, this.y - 25);
 
+        //spriteBatch.draw(currentFrame, this.x, this.y);
 
     }
 
@@ -255,5 +261,6 @@ public class GamePlayer2 extends GameItem {
         camera.position.x = MathUtils.clamp(camera.position.x, effectiveViewportWidth / 2f, MainGameClass.WORLD_WIDTH - effectiveViewportWidth / 2f);
         camera.position.y = MathUtils.clamp(camera.position.y, effectiveViewportHeight / 2f, MainGameClass.WORLD_HEIGHT - effectiveViewportHeight / 2f);
     }
+
 
 }
