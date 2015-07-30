@@ -12,6 +12,8 @@ import java.util.List;
 public class GameMap extends Rectangle {
 
     private Sprite sprite;
+    private boolean HorisontalFalseVerticalTrue = false;
+    private boolean moveRight;
 
     public GameMap(int x, int y, int width, int height, String path) {
         super(x, y, width, height);
@@ -27,6 +29,23 @@ public class GameMap extends Rectangle {
     //Overstyres ved behov i barneklassene yes ...:
     public void render(SpriteBatch spriteBatch) {
         spriteBatch.draw(sprite.getTexture(),this.x, this.y);
+    }
+    public void render(SpriteBatch batch, int x, int y,int length){
+
+        if(HorisontalFalseVerticalTrue == false) {
+            if (this.x >= MainGameClass.WORLD_WIDTH) {
+                moveRight = false;
+            }
+            if (this.x <= 0) {
+                moveRight = true;
+            }
+            if (moveRight == true) {
+                this.x += 1;
+            } else {
+                this.x = -length;
+            }
+        }
+        batch.draw(sprite.getTexture(), this.x,this.y);
     }
 
     //Overstyres ved behov i barneklassene:

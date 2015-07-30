@@ -72,7 +72,7 @@ public class GameInteger extends GameItem {
             batch.draw(currentFrame, 30, 500);
         }
         if(intNumber == 1){
-            batch.draw(currentFrame,870,500);
+            batch.draw(currentFrame,900,500);
         }
     }
     public void render(SpriteBatch batch, int x, int y){

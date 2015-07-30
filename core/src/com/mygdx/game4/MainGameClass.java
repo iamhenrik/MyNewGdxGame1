@@ -3,6 +3,7 @@ package com.mygdx.game4;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,13 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.scene.layout.Background;
+
 public class MainGameClass extends ApplicationAdapter implements GestureDetector.GestureListener {
     SpriteBatch batch;
     private GamePlayer2 player1;
     private GamePlayer2 player2;
     private GamePlayer2 player3;
     private List<GameItem> gamePlatforms;
-
+    private boolean switcher = true;
     private OrthographicCamera camera;
     private Sprite backGround;
     private GameButton startButton;
@@ -31,6 +34,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     private ArrayList<GameMap> Ambient;
     private ArrayList<GameInteger> gameIntgers;
+    private ArrayList<GameMap> BackgroundLayer;
 
     public static final int WORLD_WIDTH = 1024; //1340;
     public static final int WORLD_HEIGHT = 720; //975;
@@ -41,9 +45,13 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     private int xValueTiles = -270;
     private int xValueNumbers = 0;
+    private int xValueLayer = 0;
 
     private int tapCounter = 0;
     private int randomNumber;
+    private GameMap cloud1;
+    private GameMap cloud2;
+
 
     private ArrayList<GameInteger> selectedNumbers;
     private String resultMessage = "";
@@ -59,19 +67,28 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     @Override
     public void create() {
-
+        BackgroundLayer = new ArrayList<GameMap>();
         Ambient = new ArrayList<GameMap>();
         gamePlatforms = new ArrayList<GameItem>();
+
+        cloud1 = new GameMap(10, 500, 405,159, "CloudOneScaled.png");
+
+
 
         batch = new SpriteBatch();
         backGround = new Sprite(new Texture("MapleBackGroundPng.png"));
         backGround.setPosition(0, 0);
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
+        for(int i = 0; i<18; i++){
+            BackgroundLayer.add(new GameMap(xValueLayer, 0, 60, 720, "blueBackGround.png"));
+            xValueLayer +=60;
+        }
+
         font = new BitmapFont(Gdx.files.internal("fonts/blackOakFont.fnt"), false);
 
-        startButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2+75,150,150,"startGame.png");
-        playAgainButton = new GameButton(WORLD_WIDTH/2-75,WORLD_HEIGHT/2-75,150,150,"playAgain.png");
+        startButton = new GameButton(WORLD_WIDTH/2-85,WORLD_HEIGHT/2+75,150,150,"startGame.png");
+        playAgainButton = new GameButton(WORLD_WIDTH/2-85,WORLD_HEIGHT/2-75,150,150,"playAgain.png");
 
         gameIntgers = new ArrayList<GameInteger>();
         selectedNumbers = new ArrayList<GameInteger>();
@@ -81,20 +98,27 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
             xValueNumbers += 101;
         }
 
-        for(int i = 0; i<8; i++){
-            xValueTiles +=270;
-           Ambient.add(new GameMap(xValueTiles,0,270,79,"TileWithGround.png"));
-        }
 
-        GameMap cloud1 = new GameMap(50, 700, 810,317, "CloudOne.png");
-        Ambient.add(cloud1);
+
+        //GameMap cloud1 = new GameMap(10, 500, 405,159, "CloudOneScaled.png");
+        //Ambient.add(cloud1);
         GameMap cloud2 = new GameMap(800, 780, 605,224,"CloudTwo.png");
         Ambient.add(cloud2);
         GameMap cloud3 = new GameMap(1300, 490, 688,579,"CloudThree.png");
         Ambient.add(cloud3);
         GameMap bigTree = new GameMap(1600, 79, 388,685,"BigTree.png");
         Ambient.add(bigTree);
+        GameMap city = new GameMap(10,GROUND_LEVEL-10, 505,299,"city.png");
+        Ambient.add(city);
+        GameMap palmTree = new GameMap(510,GROUND_LEVEL-10, 212,221,"palmTree.png");
+        Ambient.add(palmTree);
+        GameMap twoPalmTrees = new GameMap(690,GROUND_LEVEL-10, 356,188,"twoPalmTrees.png");
+        Ambient.add(twoPalmTrees);
 
+        for(int i = 0; i<8; i++){
+            xValueTiles +=270;
+            Ambient.add(new GameMap(xValueTiles,0,270,79,"TileWithGround.png"));
+        }
         player1 = new GamePlayer2(GROUND_LEVEL, GROUND_LEVEL, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
         player2 = new GamePlayer2(700, GROUND_LEVEL, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
         player3 = new GamePlayer2(800, GROUND_LEVEL, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
@@ -128,18 +152,19 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         //Render:
         batch.begin();
-        backGround.draw(batch);
-        for(GameMap gameMap: Ambient){
+        for (GameMap gameMap : BackgroundLayer) {
             gameMap.render(batch);
         }
 
+        for(GameMap gameMap: Ambient){
+            gameMap.render(batch);
+
+        }
+        cloud1.render(batch, -400, 500, 400);
         //Tegner resten avhengig av status:
         switch (gameStatus) {
             case GAME_START:
                 startButton.render(batch);
-                player1.render(batch);
-                player2.render(batch);
-                player3.render(batch);
                 break;
 
             case GAME_PLAY:
@@ -147,10 +172,10 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
                     gameInteger.render(batch);
                 }
                 if(tapCounter==0) {
-                    font.draw(batch, "Blue Player Chooses", 270, 700);
+                    font.draw(batch, "Blue Player Choose your number!", 20, 700);
                 }
                 if(tapCounter==1) {
-                    font.draw(batch, "Red Player Chooses", 270, 700);
+                    font.draw(batch, "Red Player Choose your number!", 20, 700);
                 }
                 for(int i=0; i<selectedNumbers.size(); i++){
                     selectedNumbers.get(i).render(batch, i);
@@ -182,9 +207,6 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
                 break;
         }
-        //font.draw(batch, String.valueOf(randomNumber), 400, 320);
-        //gameCheck(batch);
-
         batch.end();
     }
     public void addToSelectedNumbers(GameInteger gameInteger){
@@ -216,56 +238,56 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     public void check(int redGuess, int blueGuess){
         boolean sjekk = (selectedNumbers.get(1).getNumber()-randomNumber) == (randomNumber-selectedNumbers.get(0).getNumber());
         if(redGuess == randomNumber){
-            resultMessage = "Red Won, Blue Looses, Drink 2 sips! ";
+            resultMessage = "Red Won, Blue Looses, Drink 2 Sips! ";
         }else{
-            resultMessage = "Blue Won, Red Looses, Drink 2 sips!";
+            resultMessage = "Blue Won, Red Looses, Drink 2 Sips!";
         }
         if(redGuess>randomNumber  && blueGuess > randomNumber){
             if(redGuess>blueGuess){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) +" unna.");
-                resultMessage = "Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" sips";
+                resultMessage = "Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" Sips";
             }
             if(blueGuess>redGuess){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) +" unna.");
-                resultMessage = "Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" sips";
+                resultMessage = "Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" Sips";
             }
         }
         if(redGuess<randomNumber && blueGuess<randomNumber){
             if(redGuess>blueGuess){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (randomNumber-blueGuess) +" unna.");
-                resultMessage = "Red WON, Blue Looses, Drink "  + (randomNumber-blueGuess) +" sips";
+                resultMessage = "Red WON, Blue Looses, Drink "  + (randomNumber-blueGuess) +" Sips";
             }
             if(blueGuess>redGuess){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber-redGuess) +" unna.");
-                resultMessage = "Blue WON, Red Looses, Drink "  + (randomNumber-redGuess) +" sips";
+                resultMessage = "Blue WON, Red Looses, Drink "  + (randomNumber-redGuess) +" Sips";
             }
         }
         if(redGuess < randomNumber && blueGuess > randomNumber){
             if(sjekk){
                 //showMessageDialog(null,"Dere var begge like langt ifra, drikk: " + (blueGuess-randomNumber) + " slurker hver");
-                resultMessage = "You were both " +(blueGuess-randomNumber) +", Drink "  + (blueGuess-randomNumber) +" sips";
+                resultMessage = "You both won! Drink " +(blueGuess-randomNumber) +" Sips each!";
             }
             if((blueGuess-randomNumber) > (randomNumber-redGuess)){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) + " unna");
-                resultMessage = "Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" sips";
+                resultMessage = "Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" Sips";
             }
             if((blueGuess-randomNumber) < (randomNumber-redGuess))
                 //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber - redGuess) + " unna");
-                resultMessage = "Blue WON, Red Looses, Drink "  + (randomNumber - redGuess) +" sips";
+                resultMessage = "Blue WON, Red Looses, Drink "  + (randomNumber - redGuess) +" Sips";
             //}
         }
         if(blueGuess < randomNumber && redGuess > randomNumber){
             if((redGuess-randomNumber)==(randomNumber-blueGuess)){
                 //showMessageDialog(null,"Dere var begge like langt ifra, drikk: " + (redGuess-randomNumber) + " slurker hver");
-                resultMessage = "You were both " +(redGuess-randomNumber) +", Drink "  + (redGuess-randomNumber) +" sips";
+                resultMessage = "You both won! Drink " +(redGuess-randomNumber) +" Sips each!";
             }
             if((redGuess-randomNumber)>(randomNumber-blueGuess)){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) + " unna");
-                resultMessage = "Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" sips";
+                resultMessage = "Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" Sips";
             }
             if((redGuess-randomNumber)<(randomNumber-blueGuess)){
                 //showMessageDialog(null,"Rød vant, Blå var: " +(randomNumber - blueGuess) + " unna");
-                resultMessage = "Red WON, Blue Looses, Drink "  + (randomNumber - blueGuess) +" sips";
+                resultMessage = "Red WON, Blue Looses, Drink "  + (randomNumber - blueGuess) +" Sips";
             }
         }
     }
