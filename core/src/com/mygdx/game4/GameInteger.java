@@ -66,6 +66,18 @@ public class GameInteger extends GameItem {
 
         return activated;
     }
+    public void render(SpriteBatch batch,int intNumber){
+
+        if(intNumber == 0) {
+            batch.draw(currentFrame, 30, 500);
+        }
+        if(intNumber == 1){
+            batch.draw(currentFrame,870,500);
+        }
+    }
+    public void render(SpriteBatch batch, int x, int y){
+         batch.draw(currentFrame, x, y);
+    }
 
     @Override
     public void render(SpriteBatch spriteBatch) {
@@ -75,18 +87,6 @@ public class GameInteger extends GameItem {
             currentFrame = walkAnimation.getKeyFrame(stateTime, true);
             handleInput();
             spriteBatch.draw(currentFrame, x, y);
-
-            if (selected) {
-                font.draw(spriteBatch, String.valueOf(number), x, 300);
-                /*
-                if(parent.getTapCounter()==1){
-                    spriteBatch.draw(currentFrame, 30,500);
-                }
-                if(parent.getTapCounter()==2){
-                    spriteBatch.draw(currentFrame, 850,500);
-                }
-                */
-            }
         }
     }
 

@@ -49,24 +49,25 @@ public class GameButton extends GameItem {
     public void setClicked(boolean clicked) {
         this.clicked = clicked;
     }
-
     @Override
     public void render(SpriteBatch spriteBatch) {
         if (!clicked) {
             stateTime += Gdx.graphics.getDeltaTime();
             currentFrame = walkAnimation.getKeyFrame(stateTime, true);
-            handleInput();
+            //handleInput();
             spriteBatch.draw(currentFrame, x, y);
         }
     }
+    public void backAndForth(){
 
+    }
     public void handleInput(){
-        if(Gdx.input.isKeyPressed(Input.Keys.N)){
+        //if(this.x >= MainGameClass.WORLD_WIDTH){
             this.x -= 15;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.M)){
-            this.x += 15;
-        }
+        //if(this.x +150 <= MainGameClass.WORLD_WIDTH){
+                this.x += 15;
+          //  }
+        //}
     }
 
     public boolean tap(float xTapped, float yTapped, int count, int button){

@@ -20,7 +20,8 @@ import java.util.Random;
 public class MainGameClass extends ApplicationAdapter implements GestureDetector.GestureListener {
     SpriteBatch batch;
     private GamePlayer2 player1;
-
+    private GamePlayer2 player2;
+    private GamePlayer2 player3;
     private List<GameItem> gamePlatforms;
 
     private OrthographicCamera camera;
@@ -94,7 +95,9 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         GameMap bigTree = new GameMap(1600, 79, 388,685,"BigTree.png");
         Ambient.add(bigTree);
 
-        player1 = new GamePlayer2(GROUND_LEVEL, 300, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
+        player1 = new GamePlayer2(GROUND_LEVEL, GROUND_LEVEL, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
+        player2 = new GamePlayer2(700, GROUND_LEVEL, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
+        player3 = new GamePlayer2(800, GROUND_LEVEL, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
 
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
@@ -107,6 +110,10 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         Gdx.input.setInputProcessor(new GestureDetector(this));   //sdfdf
 
 
+    }
+
+    public int getRandomNumber() {
+        return randomNumber;
     }
 
     @Override
@@ -130,32 +137,49 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         switch (gameStatus) {
             case GAME_START:
                 startButton.render(batch);
+                player1.render(batch);
+                player2.render(batch);
+                player3.render(batch);
                 break;
 
             case GAME_PLAY:
                 for(GameInteger gameInteger: gameIntgers){
                     gameInteger.render(batch);
-
                 }
+                if(tapCounter==0) {
+                    font.draw(batch, "Blue Player Chooses", 270, 700);
+                }
+                if(tapCounter==1) {
+                    font.draw(batch, "Red Player Chooses", 270, 700);
+                }
+                for(int i=0; i<selectedNumbers.size(); i++){
+                    selectedNumbers.get(i).render(batch, i);
+                }
+
 
                 break;
 
             case GAME_RESULT:
-                font.draw(batch,resultMessage, 5, 450);
+                font.draw(batch, resultMessage, 5, 450);
                 playAgainButton.render(batch);
-                for(GameInteger gameInteger: gameIntgers){
-                    gameInteger.render(batch);
-                    font.draw(batch, String.valueOf(randomNumber), 512, 500);
-                    /*
-                    for(int i=0; i<2; i++){
-                        //x+=850;
-                        selectedNumbers.get(0).setX(30).setY(500);
-                        selectedNumbers.get(1).setX(850).setY(500);
-                        selectedNumbers.get(i).render(batch);
 
-                    }
-                    */
+
+                for(int i=0; i<selectedNumbers.size(); i++){
+                    selectedNumbers.get(i).render(batch,i);
                 }
+
+                for(GameInteger gameInteger : gameIntgers){
+                    gameInteger.render(batch);
+                    //font.draw(batch, String.valueOf(randomNumber), 512, 500);
+                }
+                for(GameInteger gameInteger: gameIntgers){
+                    if(getRandomNumber() == gameInteger.getNumber()){
+                        gameInteger.render(batch, 450,460);
+                        System.out.println(gameInteger.getNumber());
+                        break;
+                    }
+                }
+
                 break;
         }
         //font.draw(batch, String.valueOf(randomNumber), 400, 320);

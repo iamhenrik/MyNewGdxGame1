@@ -18,7 +18,7 @@ public class GamePlayer2 extends GameItem {
 
     public final static int PLAYER_SIZE = 180;
     private boolean isJumping = false;
-    private final int stepValue = 12;
+    private final int stepValue = 3;
 
     private float angle = 10;
     private int groundLevel = MainGameClass.GROUND_LEVEL;
@@ -36,6 +36,8 @@ public class GamePlayer2 extends GameItem {
     //private SpriteBatch spriteBatch;
     private TextureRegion currentFrame;
     private float stateTime;
+    private boolean HorisontalFalseVerticalTrue =  false;
+    private boolean moveRight;
 
     public GamePlayer2(int x, int y, int width, int height, String path) {
         super(x, y, width, height, path);
@@ -68,6 +70,19 @@ public class GamePlayer2 extends GameItem {
 
         currentFrame = walkAnimation.getKeyFrame(stateTime, true);
 
+        if(HorisontalFalseVerticalTrue == false) {
+            if (this.x + width >= MainGameClass.WORLD_WIDTH) {
+                moveRight = false;
+            }
+            if (this.x <= 0) {
+                moveRight = true;
+            }
+            if (moveRight == true) {
+                this.x += stepValue;
+            } else {
+                this.x -= stepValue;
+            }
+        }
         spriteBatch.draw(currentFrame, this.x, this.y - 25);
 
         //spriteBatch.draw(currentFrame, this.x, this.y);
