@@ -49,6 +49,8 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
     private BitmapFont font;
 
+    private GameInteger Red;
+
     public enum GameStatus {
         GAME_START, GAME_PLAY, GAME_RESULT, GAME_OVER
     }
@@ -133,21 +135,39 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
             case GAME_PLAY:
                 for(GameInteger gameInteger: gameIntgers){
                     gameInteger.render(batch);
+
                 }
+
                 break;
 
             case GAME_RESULT:
                 font.draw(batch,resultMessage, 5, 450);
                 playAgainButton.render(batch);
+                for(GameInteger gameInteger: gameIntgers){
+                    gameInteger.render(batch);
+                    font.draw(batch, String.valueOf(randomNumber), 512, 500);
+                    /*
+                    for(int i=0; i<2; i++){
+                        //x+=850;
+                        selectedNumbers.get(0).setX(30).setY(500);
+                        selectedNumbers.get(1).setX(850).setY(500);
+                        selectedNumbers.get(i).render(batch);
+
+                    }
+                    */
+                }
                 break;
         }
-        font.draw(batch, String.valueOf(randomNumber), 400, 320);
+        //font.draw(batch, String.valueOf(randomNumber), 400, 320);
         //gameCheck(batch);
 
         batch.end();
     }
     public void addToSelectedNumbers(GameInteger gameInteger){
         selectedNumbers.add(gameInteger);
+    }
+    public int getTapCounter() {
+        return tapCounter;
     }
 
     public void setGameResult(){
@@ -156,8 +176,12 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
             font.draw(batch,String.valueOf((selectedNumbers.get(i)).getNumber()),selectedNumbers.get(i).getX(),500);
         }
         */
-        check(selectedNumbers.get(0).getNumber(),selectedNumbers.get(1).getNumber());
-        System.out.println(selectedNumbers.get(0).getNumber() + ", "+selectedNumbers.get(1).getNumber());
+        check(selectedNumbers.get(0).getNumber(), selectedNumbers.get(1).getNumber());
+        System.out.println(selectedNumbers.get(0).getNumber() + ", " + selectedNumbers.get(1).getNumber());
+        if((selectedNumbers.get(1).getNumber()-randomNumber) == (randomNumber-selectedNumbers.get(0).getNumber())){
+            System.out.println("yes");
+        }
+
     }
 
     public void randTall(){
@@ -166,44 +190,45 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
     }
 
     public void check(int redGuess, int blueGuess){
+        boolean sjekk = (selectedNumbers.get(1).getNumber()-randomNumber) == (randomNumber-selectedNumbers.get(0).getNumber());
         if(redGuess == randomNumber){
-            resultMessage = "Red Wins";
+            resultMessage = "Red Won, Blue Looses, Drink 2 sips! ";
         }else{
-            resultMessage = "Blue Wins";
+            resultMessage = "Blue Won, Red Looses, Drink 2 sips!";
         }
         if(redGuess>randomNumber  && blueGuess > randomNumber){
             if(redGuess>blueGuess){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) +" unna.");
-                resultMessage = "1Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" sips";
+                resultMessage = "Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" sips";
             }
             if(blueGuess>redGuess){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) +" unna.");
-                resultMessage = "2Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" sips";
+                resultMessage = "Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" sips";
             }
         }
         if(redGuess<randomNumber && blueGuess<randomNumber){
             if(redGuess>blueGuess){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (randomNumber-blueGuess) +" unna.");
-                resultMessage = "3Red WON, Blue Looses, Drink "  + (randomNumber-blueGuess) +" sips";
+                resultMessage = "Red WON, Blue Looses, Drink "  + (randomNumber-blueGuess) +" sips";
             }
             if(blueGuess>redGuess){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber-redGuess) +" unna.");
-                resultMessage = "4Blue WON, Red Looses, Drink "  + (randomNumber-redGuess) +" sips";
+                resultMessage = "Blue WON, Red Looses, Drink "  + (randomNumber-redGuess) +" sips";
             }
         }
         if(redGuess < randomNumber && blueGuess > randomNumber){
-            if((blueGuess-randomNumber) == (randomNumber-redGuess)){
+            if(sjekk){
                 //showMessageDialog(null,"Dere var begge like langt ifra, drikk: " + (blueGuess-randomNumber) + " slurker hver");
                 resultMessage = "You were both " +(blueGuess-randomNumber) +", Drink "  + (blueGuess-randomNumber) +" sips";
             }
             if((blueGuess-randomNumber) > (randomNumber-redGuess)){
                 //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) + " unna");
-                resultMessage = "5Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" sips";
+                resultMessage = "Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" sips";
             }
-            else{
+            if((blueGuess-randomNumber) < (randomNumber-redGuess))
                 //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber - redGuess) + " unna");
-                resultMessage = "6Blue WON, Red Looses, Drink "  + (randomNumber - redGuess) +" sips";
-            }
+                resultMessage = "Blue WON, Red Looses, Drink "  + (randomNumber - redGuess) +" sips";
+            //}
         }
         if(blueGuess < randomNumber && redGuess > randomNumber){
             if((redGuess-randomNumber)==(randomNumber-blueGuess)){
@@ -212,11 +237,11 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
             }
             if((redGuess-randomNumber)>(randomNumber-blueGuess)){
                 //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) + " unna");
-                resultMessage = "7Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" sips";
+                resultMessage = "Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" sips";
             }
-            else{
+            if((redGuess-randomNumber)<(randomNumber-blueGuess)){
                 //showMessageDialog(null,"Rød vant, Blå var: " +(randomNumber - blueGuess) + " unna");
-                resultMessage = "8Red WON, Blue Looses, Drink "  + (randomNumber - blueGuess) +" sips";
+                resultMessage = "Red WON, Blue Looses, Drink "  + (randomNumber - blueGuess) +" sips";
             }
         }
     }
@@ -284,6 +309,8 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
                     gameStatus = GameStatus.GAME_PLAY;
                     resultMessage = "";
                     selectedNumbers.clear();
+
+
                 }
                 break;
         }

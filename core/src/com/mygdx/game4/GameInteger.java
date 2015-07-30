@@ -78,6 +78,14 @@ public class GameInteger extends GameItem {
 
             if (selected) {
                 font.draw(spriteBatch, String.valueOf(number), x, 300);
+                /*
+                if(parent.getTapCounter()==1){
+                    spriteBatch.draw(currentFrame, 30,500);
+                }
+                if(parent.getTapCounter()==2){
+                    spriteBatch.draw(currentFrame, 850,500);
+                }
+                */
             }
         }
     }
@@ -107,7 +115,6 @@ public class GameInteger extends GameItem {
             if (xTapped >= this.getX() && xTapped <= (this.getX() + this.getWidth()) && yTapped <= justertY && yTapped >= (justertY - this.getHeight())) {
 
                 this.setSelected(true);
-                Gdx.app.log("mygame", "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
                 this.parent.addToSelectedNumbers(this);
                 this.parent.incrementTapCounter();
 
