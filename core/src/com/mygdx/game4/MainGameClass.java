@@ -68,15 +68,15 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         backGround.setPosition(0, 0);
         backGround.setSize(WORLD_WIDTH, WORLD_HEIGHT);
 
-        font = new BitmapFont(Gdx.files.internal("fonts/blackOakFont.fnt"), false);
+        //font = new BitmapFont(Gdx.files.internal("fonts/blackOakFont.fnt"), false);
 
         touch = new Vector3();
 
-        One = new GameFigure(700,500, 76,126, "numberOne.png");
+        //One = new GameFigure(700,500, 76,126, "numberOne.png");
 
         man = new GameFigure();
-        swirl = new GameSwirl(2350, GROUND_LEVEL, "numberOne.png");
-        swirl2 = new GameSwirl(1500, GROUND_LEVEL+10, "amy_sprite.png");
+        //swirl = new GameSwirl(2350, GROUND_LEVEL, "numberOne.png");
+        //swirl2 = new GameSwirl(1500, GROUND_LEVEL+10, "amy_sprite.png");
         boom = new GameExplosion(2000, 400);
         ufo = new GameAnimations(2350, 1170);
 
@@ -98,7 +98,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
 
         player1 = new GamePlayer2(GROUND_LEVEL, 300, GamePlayer2.PLAYER_SIZE, GamePlayer2.PLAYER_SIZE, "SlimeAniScaled.png");
 
-        /*gamePlatforms.add(new GamePlatform(2400, 370, 81,63,"SnowPlatformSmall.png", 2, true, 900, 300));
+        gamePlatforms.add(new GamePlatform(2400, 370, 81,63,"SnowPlatformSmall.png", 2, true, 900, 300));
         gamePlatforms.add(new GamePlatform(140, 800, 81,63,"SnowPlatformSmall.png", 2, true, 600, 600));
         gamePlatforms.add(new GamePlatform(2300, 1030, 340, 126, "SnowPlatformBig.png",0,false,0,0));
         gamePlatforms.add(new GamePlatform(250, 150, 81,63,"SnowPlatformSmall.png", 0, false, 0, 0));
@@ -110,7 +110,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
             gamePlatforms.add(new GamePlatform(xValuePlatforms+200, 920, 81, 63, "SnowPlatformSmall.png", 0, false, 0, 0));
             System.out.println("lol " + xValuePlatforms);
         }
-           */
+
 
         //GameNPC npc1 = new GameNPC(platform3,(int) platform2.x, (int)platform2.y, GameNPC.NPC_SIZE, GameNPC.NPC_SIZE, "CashSack.png");
         //gameNPCs.add(npc1);
@@ -136,9 +136,9 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //for (GameItem gameItem: gamePlatforms) {
-        //    gameItem.update();
-        //}
+        for (GameItem gameItem: gamePlatforms) {
+            gameItem.update();
+        }
         player1.update(gamePlatforms);
 
         //Render:
@@ -148,11 +148,11 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
             GameMap.render(batch);
         }
         player1.render(batch);
-        //for (GameItem gameItem: gamePlatforms) {
-        //  batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
-        //}
-        font.draw(batch, "HELLO WHAT IS GOING ON", 1300, 600);
-        swirl.render(batch);
+        for (GameItem gameItem: gamePlatforms) {
+          batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
+        }
+        //.draw(batch, "HELLO WHAT IS GOING ON", 1300, 600);
+        //swirl.render(batch);
         batch.end();
         //generalUpdate(touch);
 
