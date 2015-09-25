@@ -152,7 +152,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
           batch.draw(gameItem.getSprite(), gameItem.x, gameItem.y);
         }
         //.draw(batch, "HELLO WHAT IS GOING ON", 1300, 600);
-        //swirl.render(batch);
+        swirl.render(batch);
         batch.end();
         //generalUpdate(touch);
 

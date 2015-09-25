@@ -51,7 +51,7 @@ public class GamePlayer2 extends GameItem {
 
             }
         }
-        walkAnimation = new Animation(0.033f, walkFrames);
+        walkAnimation = new Animation(0.063f, walkFrames);
 
         stateTime = 0f;
     }
