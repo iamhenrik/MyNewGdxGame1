@@ -131,7 +131,7 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         camera.zoom = 11f;
         camera.setToOrtho(false, WORLD_WIDTH, WORLD_HEIGHT);
         camera.update();
-        Gdx.input.setInputProcessor(new GestureDetector(this));   //sdfdf
+        Gdx.input.setInputProcessor(new GestureDetector(this));
 
 
     }
@@ -244,21 +244,21 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
         }
         if(redGuess>randomNumber  && blueGuess > randomNumber){
             if(redGuess>blueGuess){
-                //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) +" unna.");
+                //showMessageDialog(null,"Blï¿½ vant, Rï¿½d var: " + (redGuess-randomNumber) +" unna.");
                 resultMessage = "Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" Sips";
             }
             if(blueGuess>redGuess){
-                //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) +" unna.");
+                //showMessageDialog(null,"Rï¿½d vant, Blï¿½ var: " + (blueGuess-randomNumber) +" unna.");
                 resultMessage = "Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" Sips";
             }
         }
         if(redGuess<randomNumber && blueGuess<randomNumber){
             if(redGuess>blueGuess){
-                //showMessageDialog(null,"Rød vant, Blå var: " + (randomNumber-blueGuess) +" unna.");
+                //showMessageDialog(null,"Rï¿½d vant, Blï¿½ var: " + (randomNumber-blueGuess) +" unna.");
                 resultMessage = "Red WON, Blue Looses, Drink "  + (randomNumber-blueGuess) +" Sips";
             }
             if(blueGuess>redGuess){
-                //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber-redGuess) +" unna.");
+                //showMessageDialog(null,"Blï¿½ vant, Rï¿½d var: " + (randomNumber-redGuess) +" unna.");
                 resultMessage = "Blue WON, Red Looses, Drink "  + (randomNumber-redGuess) +" Sips";
             }
         }
@@ -268,11 +268,11 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
                 resultMessage = "You both won! Drink " +(blueGuess-randomNumber) +" Sips each!";
             }
             if((blueGuess-randomNumber) > (randomNumber-redGuess)){
-                //showMessageDialog(null,"Rød vant, Blå var: " + (blueGuess-randomNumber) + " unna");
+                //showMessageDialog(null,"Rï¿½d vant, Blï¿½ var: " + (blueGuess-randomNumber) + " unna");
                 resultMessage = "Red WON, Blue Looses, Drink "  + (blueGuess-randomNumber) +" Sips";
             }
             if((blueGuess-randomNumber) < (randomNumber-redGuess))
-                //showMessageDialog(null,"Blå vant, Rød var: " + (randomNumber - redGuess) + " unna");
+                //showMessageDialog(null,"Blï¿½ vant, Rï¿½d var: " + (randomNumber - redGuess) + " unna");
                 resultMessage = "Blue WON, Red Looses, Drink "  + (randomNumber - redGuess) +" Sips";
             //}
         }
@@ -282,11 +282,11 @@ public class MainGameClass extends ApplicationAdapter implements GestureDetector
                 resultMessage = "You both won! Drink " +(redGuess-randomNumber) +" Sips each!";
             }
             if((redGuess-randomNumber)>(randomNumber-blueGuess)){
-                //showMessageDialog(null,"Blå vant, Rød var: " + (redGuess-randomNumber) + " unna");
+                //showMessageDialog(null,"Blï¿½ vant, Rï¿½d var: " + (redGuess-randomNumber) + " unna");
                 resultMessage = "Blue WON, Red Looses, Drink "  + (redGuess-randomNumber) +" Sips";
             }
             if((redGuess-randomNumber)<(randomNumber-blueGuess)){
-                //showMessageDialog(null,"Rød vant, Blå var: " +(randomNumber - blueGuess) + " unna");
+                //showMessageDialog(null,"Rï¿½d vant, Blï¿½ var: " +(randomNumber - blueGuess) + " unna");
                 resultMessage = "Red WON, Blue Looses, Drink "  + (randomNumber - blueGuess) +" Sips";
             }
         }
