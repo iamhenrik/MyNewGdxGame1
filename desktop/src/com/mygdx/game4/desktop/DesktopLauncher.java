@@ -9,6 +9,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Mitt Spill";
+
 		config.width = MainGameClass.WORLD_WIDTH;
 		config.height = MainGameClass.WORLD_HEIGHT;
 		new LwjglApplication(new MainGameClass(), config);
